@@ -62,7 +62,7 @@ stakeholders in the problem area.]
   responsibilities for individual team members, how the group will work together, as
   well as the milestones that can be used to measure the project’s progress.</li>
   <ul>
-    <li>e.g. programming languages, tools, systems to be used</li>
+    <li>Include a diagram of the project plan (e.g. Gantt Chart or PERT).</li>
   </ul>
   <li>Briefly describe potential risks that might arise and your plans to mitigate them.</li>
 </ul>
