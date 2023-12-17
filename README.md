@@ -1,12 +1,12 @@
 # Experimental-Systems-Project
 
 ## Functional Requirements
-![Alt text](image-3.png)
+![Alt text](README/image-3.png)
 
 ## Non-Functional Requirements
-![Alt text](image-4.png)
+![Alt text](README/image-4.png)
 
-![Alt text](image-5.png)
+![Alt text](README/image-5.png)
 
 
 
