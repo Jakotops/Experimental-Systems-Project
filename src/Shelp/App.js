@@ -1,5 +1,9 @@
+//TODO: Configure the navigation of the screens
+
 import { StatusBar } from 'expo-status-bar';
 import { StyleSheet, Text, View } from 'react-native';
+
+
 
 export default function App() {
   return (
