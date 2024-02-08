@@ -29,6 +29,6 @@ if (firebase.apps.length === 0) {
 
 const auth = firebase.auth(); // Store the authentication object in a variable for login and signup
 const db = firebase.firestore(); // Store the firestore object in a variable for database access
-const analytics = getAnalytics(app);
+const analytics =  (app);
 
 export { auth, db }; // Export the authentication and database objects for use in js files

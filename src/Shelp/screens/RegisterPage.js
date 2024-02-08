@@ -8,8 +8,6 @@ import React from 'react'
 const RegisterPage = ({ navigation }) => {
   return (
     <View>
-      <Text>RegisterPage</Text>
-      //Register Button
       <Button title='Register' onPress={() => navigation.navigate('LoginPage')} />
       <Button title="Return to Login" onPress={() => navigation.goBack()} />
     </View>

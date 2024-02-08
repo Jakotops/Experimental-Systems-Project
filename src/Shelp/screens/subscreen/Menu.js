@@ -7,7 +7,7 @@ const Menu = ({navigation}) => {
   return (
     <View>
       <Text>Menu</Text>
-      // Adds the buttons to the menu to navagate to the other screens
+
       <Button title="History" onPress={() => navigation.navigate('History')} />
       <Button title="Settings" onPress={() => navigation.navigate('Settings')} />
       <Button title="Logout" onPress={() => navigation.navigate('NonAuthenticated')} />
