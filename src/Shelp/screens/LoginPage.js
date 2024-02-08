@@ -6,6 +6,7 @@ const LoginPage = ({navigation}) => {
   return (
     <View>
       <Text>LoginPage</Text>
+      // Login and register buttons
       <Button 
         title="Login"
         onPress={() => navigation.navigate('Authenticated', {screen: 'Camera'})}

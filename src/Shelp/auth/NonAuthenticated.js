@@ -1,8 +1,9 @@
+// Provide the stack for non-authenticated users that have not logged in to the app.
+// The stack will contain the login and register pages.
 import { View, Text } from 'react-native'
 import LoginPage from '../screens/LoginPage'
 import RegisterPage from '../screens/RegisterPage'
 import { createNativeStackNavigator } from '@react-navigation/native-stack'
-import { NavigationContainer } from '@react-navigation/native'
 import React from 'react'
 
 function NonAuthenticatedStack(){

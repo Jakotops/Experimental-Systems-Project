@@ -1,3 +1,5 @@
+// Displays the nested stack for the user when they logged in to the app. The stack will contain the profile, camera, and preference pages.
+
 import { View, Text } from 'react-native'
 import React from 'react'
 import { NavigationContainer } from '@react-navigation/native'; //import the navigation container

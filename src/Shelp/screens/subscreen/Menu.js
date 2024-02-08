@@ -1,21 +1,13 @@
+// Sets the display screen for the menu
 import { StyleSheet, Text, View, Button } from 'react-native'
 import React from 'react'
 
 
 const Menu = ({navigation}) => {
-  const handleLogout = () => {
-    // Reset the navigation stack to the NonAuthenticated screen
-    navigation.dispatch(
-      CommonActions.reset({
-        index: 0,
-        routes: [{ name: 'NonAuthenticated' }],
-      })
-    );
-  };
-
   return (
     <View>
       <Text>Menu</Text>
+      // Adds the buttons to the menu to navagate to the other screens
       <Button title="History" onPress={() => navigation.navigate('History')} />
       <Button title="Settings" onPress={() => navigation.navigate('Settings')} />
       <Button title="Logout" onPress={() => navigation.navigate('NonAuthenticated')} />
