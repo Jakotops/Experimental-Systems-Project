@@ -1,18 +1,23 @@
 //TODO: Set up the stack navigation of the screens
-
 import { StatusBar } from 'expo-status-bar';
 import { StyleSheet, Text, View } from 'react-native';
+import Authenticated from './auth/Authenticated';
+import NonAuthenticated from './auth/NonAuthenticated';
+import { createNativeStackNavigator } from '@react-navigation/native-stack'
+import { NavigationContainer } from '@react-navigation/native'
 
-
-
-export default function App() {
+export default function App() { 
+  const Stack = createNativeStackNavigator();
   return (
-    <View style={styles.container}>
-      <Text>Open up App.js to start working on your app!</Text>
-      <StatusBar style="auto" />
-    </View>
+    <NavigationContainer>
+      <Stack.Navigator>
+        <Stack.Screen options={{headerShown: false}} name="Authenticated" component={Authenticated} />
+        <Stack.Screen options={{headerShown: false}} name="NonAuthenticated" component={NonAuthenticated} />  
+      </Stack.Navigator>
+    </NavigationContainer>
   );
 }
+
 
 const styles = StyleSheet.create({
   container: {
