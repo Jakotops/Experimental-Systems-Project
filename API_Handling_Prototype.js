@@ -61,11 +61,16 @@ async function getProductData(barcode, ingrd_wanted, allergens_wanted, nutri_val
   return toReturn;
 }
 
-async function printProductData(barcode, ingrd_wanted, allergens_wanted, nutri_val_wanted, images_wanted){
+function printProductData(barcode, ingrd_wanted, allergens_wanted, nutri_val_wanted, images_wanted){
   console.log(`Run printProductData`);
 
-  product_data = await getProductData(barcode, ingrd_wanted, allergens_wanted, nutri_val_wanted, images_wanted);
-  let dataStringForm = JSON.stringify(product_data);
+  getProductData(barcode, ingrd_wanted, allergens_wanted, nutri_val_wanted, images_wanted)
+    .then((product_data) => {
+      let dataStringForm = JSON.stringify(product_data);
+      console.log(`Product data:
+      ${dataStringForm}`);
+  });
+  
 
   console.log(`Product data:
   ${dataStringForm}`);
