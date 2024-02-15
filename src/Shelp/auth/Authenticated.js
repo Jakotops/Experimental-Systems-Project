@@ -17,6 +17,7 @@ function AuthenticatedTabs(){
   const [newUser, setNewUser] = React.useState(false);
   const [loading, setLoading] = React.useState(true);
 
+  // Detects if the user has logged in
   useEffect(() => {
     const auth = FirebaseAuth;
     const unsubscribe = onAuthStateChanged(auth, (user) => {
@@ -29,6 +30,7 @@ function AuthenticatedTabs(){
     return unsubscribe;
   }, []); 
 
+  // Checks if the user is new
   const CheckIfNewUser = ( id ) => {
     const db = FirebaseDb;
     const docRef = doc(db, "users", id);
@@ -37,7 +39,6 @@ function AuthenticatedTabs(){
         if (docSnap.exists()) {
           console.log("Document data:", docSnap.data());
           setNewUser(docSnap.data().newUser);
-
         } else {
           console.log("No such document!");
         }
@@ -57,6 +58,7 @@ function AuthenticatedTabs(){
     );
   }
   return (
+    // Tab navigator screen is intialized to the preference page if the user is new, otherwise the camera page
     <Tab.Navigator
     initialRouteName={newUser ? "Preference" : "Camera"}
     screenOptions={{headerShown:false}}

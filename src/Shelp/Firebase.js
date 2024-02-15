@@ -27,6 +27,7 @@ export const app = initializeApp(firebaseConfig);
 export const FirebaseAuth = getAuth(app); // Store the authentication object in a variable for login and signup
 export const FirebaseDb = getFirestore(app) // Store the firestore object in a variable for database access
 
+// Function not tested yet
 export const readDocument = (collection, docId) => {
   const docRef = doc(FirebaseDb, collection, docId);
   getDoc(docRef)
@@ -43,6 +44,7 @@ export const readDocument = (collection, docId) => {
     });
 }
 
+// Function not tested yet
 export const readDocumentField = (collection, docId, field) => {
   const docRef = doc(FirebaseDb, collection, docId);
   getDoc(docRef)
@@ -59,6 +61,11 @@ export const readDocumentField = (collection, docId, field) => {
     });
 }
 
+// Update a field in a document of the database
+// @Params collection (String): the collection to store the document
+// @Params docId (String): the document id
+// @Params field (String): the field to update
+// @Params value: the value to update the field to
 export const updateDocumentField = (collection, docId, field, value) => {
   const docRef = doc(FirebaseDb, collection, docId);
   updateDoc(docRef, {
@@ -72,6 +79,10 @@ export const updateDocumentField = (collection, docId, field, value) => {
   });
 }
 
+// Create a new document in a collection of the database
+// @Params collection (String): the collection to store the document
+// @Params docId (String): the document id
+// @Params data (Object): the data to store in the document
 export const createDocument = (collection, docId, data) => {  
   const userRef = doc(FirebaseDb, collection, docId);
   setDoc(userRef, data)

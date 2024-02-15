@@ -12,6 +12,7 @@ const LoginPage = ({navigation}) => {
 
   const auth = FirebaseAuth;
 
+  // Login as a developer
   const DevLogin = () => {
     signInWithEmailAndPassword(auth, 'Dev@Dev.com', 'Dev1234!')
     .then((userCredential) => {
@@ -23,7 +24,7 @@ const LoginPage = ({navigation}) => {
     .catch((error) => alert(error.message));
   }
 
-
+  // Login in with the user
   const handleLogin = () => {
     signInWithEmailAndPassword(auth, email, password)
       .then((userCredential) => {

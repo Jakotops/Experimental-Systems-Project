@@ -2,13 +2,13 @@
 import { StyleSheet, Text, View, Button } from 'react-native'
 import React, { useEffect } from 'react'
 import { FirebaseAuth, FirebaseDb, updateDocumentField } from '../../Firebase'
-import { doc, setDoc } from "firebase/firestore";
 import { signOut, onAuthStateChanged } from "firebase/auth";
 
 const Menu = ({navigation}) => {
   const [id, setId] = React.useState('');
   const auth = FirebaseAuth;
   
+  // Checks if the user is logged in on the menu screen
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth, (user) => {
       if (user) {
@@ -21,11 +21,11 @@ const Menu = ({navigation}) => {
     return unsubscribe;},[]);
     
 
-
+  // Logs the user out
   const handleLogout = () => {
     signOut(auth).then(() => {
       console.log('User has been logged out');
-      
+      // Sets new user status to false - better implentation is to read status from the database to reduce writes
       updateDocumentField('users', id, 'newUser', false);
       navigation.navigate('NonAuthenticated')
     }).catch((error) => {

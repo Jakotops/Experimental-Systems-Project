@@ -30,6 +30,7 @@ const RegisterPage = ({ navigation }) => {
     const usernameLengthRegex = /^(?=.{6,20}$)/;
     const usernameCharacterRegex = /^(?![_.])(?!.*[_.]{2})[a-zA-Z0-9._]+(?<![_.])$/;
 
+    // Password validation conditions
     if (!(usernameLengthRegex.test(username))){ 
       alert('Username must be between 6-20 characters');
       return;
@@ -46,7 +47,8 @@ const RegisterPage = ({ navigation }) => {
       alert('Password must contain at least 8 characters, 1 letter, 1 number, and 1 special character');
       return;
     }
-
+    
+    // Register user
     createUserWithEmailAndPassword(auth, email, password)
       .then((userCredential) => {
         // Signed in 
