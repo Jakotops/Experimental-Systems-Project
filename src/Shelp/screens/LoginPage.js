@@ -10,15 +10,26 @@ const LoginPage = ({navigation}) => {
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
 
-
   const auth = FirebaseAuth;
+
+  const DevLogin = () => {
+    signInWithEmailAndPassword(auth, 'Dev@Dev.com', 'Dev1234!')
+    .then((userCredential) => {
+      // Signed in 
+      const user = userCredential.user;
+      console.log(user.email)
+      navigation.navigate('Authenticated')
+    })
+    .catch((error) => alert(error.message));
+  }
+
 
   const handleLogin = () => {
     signInWithEmailAndPassword(auth, email, password)
       .then((userCredential) => {
         // Signed in 
         const user = userCredential.user;
-        console.log(user)
+        console.log(user.email)
         navigation.navigate('Authenticated')
       })
       .catch((error) => alert(error.message));
@@ -44,6 +55,9 @@ const LoginPage = ({navigation}) => {
         onPress={handleLogin}
       />
       <Button title='Register' onPress={() => navigation.navigate('RegisterPage')} />
+      <Button 
+        title='Dev Login' 
+        onPress={DevLogin} />
     </KeyboardAvoidingView>
   )
 }
