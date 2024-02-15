@@ -3,68 +3,104 @@
 
 import { KeyboardAvoidingView, TextInput, StyleSheet, Text, View, Button } from 'react-native'
 import React, {useState} from 'react'
-import { FirebaseAuth } from '../Firebase'
-import { createUserWithEmailAndPassword } from "firebase/auth";
-
+import { FirebaseAuth,  FirebaseDb} from '../Firebase'
+import { createUserWithEmailAndPassword, updateProfile } from "firebase/auth";
+import { doc, setDoc } from "firebase/firestore"; 
 
 const RegisterPage = ({ navigation }) => {
-  const [firstName, setFirstName] = useState('')
   const [username, setUsername] = useState('')
+  const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
-  const [ConfirmPassword, setConfirmPassword] = useState('')
+  const [confirmPassword, setConfirmPassword] = useState('')
+  const [showPassword, setShowpassword] = useState(false)
+  const [showConfirmPassword, setShowConfirmPassword] = useState(false)
+  const [id, setId] = useState('')
 
   const auth = FirebaseAuth; 
+  const db = FirebaseDb;
+
+  const toggleShowPassword = (password) => {
+    setShowpassword(!password)
+  }
 
   const handleRegister = () => {
-    if (password !== ConfirmPassword) {
+      //  Regex for password validation of at least 8 characters, 1 letter, 1 number, and 1 special character 
+    // https://stackoverflow.com/a/21456918/22072623    
+    const validPasswordRegex = /^(?=.*[A-Za-z])(?=.*\d)(?=.*[@$!%*#?&])[A-Za-z\d@$!%*#?&]{8,}$/
+
+    const usernameLengthRegex = /^(?=.{6,20}$)/;
+    const usernameCharacterRegex = /^(?![_.])(?!.*[_.]{2})[a-zA-Z0-9._]+(?<![_.])$/;
+
+    if (!(usernameLengthRegex.test(username))){ 
+      alert('Username must be between 6-20 characters');
+      return;
+    }
+    if (!(usernameCharacterRegex.test(username))){
+      alert('Invalid special characters in username');
+      return;
+    }
+    if (password !== confirmPassword) {
       alert('Passwords do not match');
       return;
     }
-
-    //  Regex for password validation of at least 8 characters, 1 letter, 1 number, and 1 special character 
-    // https://stackoverflow.com/a/21456918/22072623    
-
-    const validRegex = /^(?=.*[A-Za-z])(?=.*\d)(?=.*[@$!%*#?&])[A-Za-z\d@$!%*#?&]{8,}$/
-    if (!(validRegex.test(password))){
+    if (!(validPasswordRegex.test(password))){
       alert('Password must contain at least 8 characters, 1 letter, 1 number, and 1 special character');
       return;
     }
-    createUserWithEmailAndPassword(auth, username, password)
+
+    createUserWithEmailAndPassword(auth, email, password)
       .then((userCredential) => {
         // Signed in 
         const user = userCredential.user;
+        const id = user.uid
         console.log(user.email + ' has been registered'); 
-        navigation.navigate('LoginPage')    
+        console.log("User ID: " + id);
+        setId(id);
        })
       .catch((error) => alert(error.message));
+     
+    // add user to database
+    const userRef = doc(db, "users", id);
+    setDoc(userRef, {
+      username: username,
+      email: email,
+      newUser: true
+    })
+    // print added document to console
+    .then(() => {
+      console.log("Document written with ID: ", id);
+    })
+    .catch((error) => {
+      console.error("Error adding document: ", error);
+    });
+
+    navigation.navigate('LoginPage')      
   }
 
   return (
     <KeyboardAvoidingView>
       <Text>RegisterPage</Text>
       <TextInput 
-        placeholder="First Name"
-
-      />
-      <TextInput 
-        placeholder="Last Name"
-      />
-      <TextInput 
         placeholder="Username"
-        value={username}
+        value={username} 
         onChangeText={text => setUsername(text)}
+      />
+      <TextInput 
+        placeholder="Email"
+        value={email}
+        onChangeText={text => setEmail(text)}
       />
       <TextInput 
         placeholder="Password"
         value={password}
         onChangeText={text => setPassword(text)}
-        secureTextEntry
+        secureTextEntry={!showPassword}
       />
       <TextInput
         placeholder="Confirm Password"
-        value={ConfirmPassword}
+        value={confirmPassword}
         onChangeText={text => setConfirmPassword(text)}
-        secureTextEntry
+        secureTextEntry={!showConfirmPassword}
       />
       <Button title='Register' onPress={handleRegister} />
       <Button title="Return to Login" onPress={() => navigation.goBack()} />

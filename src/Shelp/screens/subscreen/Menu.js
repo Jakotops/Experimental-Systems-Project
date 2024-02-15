@@ -1,16 +1,31 @@
 // Sets the display screen for the menu
 import { StyleSheet, Text, View, Button } from 'react-native'
-import React from 'react'
-import { FirebaseAuth } from '../../Firebase'
-import { signOut } from "firebase/auth";
+import React, { useEffect } from 'react'
+import { FirebaseAuth, FirebaseDb, updateDocumentField } from '../../Firebase'
+import { doc, setDoc } from "firebase/firestore";
+import { signOut, onAuthStateChanged } from "firebase/auth";
 
 const Menu = ({navigation}) => {
-
+  const [id, setId] = React.useState('');
   const auth = FirebaseAuth;
+  
+  useEffect(() => {
+    const unsubscribe = onAuthStateChanged(auth, (user) => {
+      if (user) {
+        console.log('User is logged in');
+        setId(user.uid);
+      } else {
+        console.log('User is not logged in');
+      }
+    })
+    return unsubscribe;},[]);
+    
+
 
   const handleLogout = () => {
     signOut(auth).then(() => {
       console.log('User has been logged out');
+      updateDocumentField('users', id, 'newUser', false);
       navigation.navigate('NonAuthenticated')
     }).catch((error) => {
       console.log(error.message)

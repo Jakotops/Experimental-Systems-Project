@@ -2,7 +2,7 @@
 import { initializeApp } from "firebase/app";
 import { getAuth } from "firebase/auth";
 import { getFirestore } from "firebase/firestore";
-
+import { doc, setDoc, getDoc, updateDoc } from "firebase/firestore";
 // TODO: Add SDKs for Firebase products that you want to use
 // https://firebase.google.com/docs/web/setup#available-libraries
 
@@ -20,8 +20,57 @@ const firebaseConfig = {
   measurementId: "G-79N1C3Z928"
 };
 
+
 // Initialize Firebase
 export const app = initializeApp(firebaseConfig);
 
 export const FirebaseAuth = getAuth(app); // Store the authentication object in a variable for login and signup
 export const FirebaseDb = getFirestore(app) // Store the firestore object in a variable for database access
+
+export const readDocument = (collection, docId) => {
+  const db = FirebaseDb;
+  const docRef = doc(db, collection, docId);
+  getDoc(docRef)
+    .then((docSnap) => {
+      if (docSnap.exists()) {
+        console.log("Document data:", docSnap.data());
+        return docSnap.data();
+      } else {
+        console.log("No such document!");
+      }
+    })  
+    .catch((error) => {
+      console.log("Error getting document:", error);
+    });
+}
+
+export const readDocumentField = (collection, docId, field) => {
+  const db = FirebaseDb;
+  const docRef = doc(db, collection, docId);
+  getDoc(docRef)
+    .then((docSnap) => {
+      if (docSnap.exists()) {
+        console.log("Document data:", docSnap.data());
+        return docSnap.data().field;
+      } else {
+        console.log("No such document!");
+      }
+    })  
+    .catch((error) => {
+      console.log("Error getting document:", error);
+    });
+}
+
+export const updateDocumentField = (collection, docId, field, value) => {
+  const db = FirebaseDb;
+  const docRef = doc(db, collection, docId);
+  updateDoc(docRef, {
+    [field]: value
+  })  
+  .then(() => {
+    console.log("Document successfully updated! ("+ collection + " " + docId + " " + field + " " + value + ")");
+  })
+  .catch((error) => {
+    console.error("Error updating document: ", error);
+  });
+}
