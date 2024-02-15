@@ -25,6 +25,7 @@ const Menu = ({navigation}) => {
   const handleLogout = () => {
     signOut(auth).then(() => {
       console.log('User has been logged out');
+      
       updateDocumentField('users', id, 'newUser', false);
       navigation.navigate('NonAuthenticated')
     }).catch((error) => {

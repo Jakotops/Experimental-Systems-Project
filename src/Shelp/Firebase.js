@@ -28,8 +28,7 @@ export const FirebaseAuth = getAuth(app); // Store the authentication object in 
 export const FirebaseDb = getFirestore(app) // Store the firestore object in a variable for database access
 
 export const readDocument = (collection, docId) => {
-  const db = FirebaseDb;
-  const docRef = doc(db, collection, docId);
+  const docRef = doc(FirebaseDb, collection, docId);
   getDoc(docRef)
     .then((docSnap) => {
       if (docSnap.exists()) {
@@ -45,8 +44,7 @@ export const readDocument = (collection, docId) => {
 }
 
 export const readDocumentField = (collection, docId, field) => {
-  const db = FirebaseDb;
-  const docRef = doc(db, collection, docId);
+  const docRef = doc(FirebaseDb, collection, docId);
   getDoc(docRef)
     .then((docSnap) => {
       if (docSnap.exists()) {
@@ -62,8 +60,7 @@ export const readDocumentField = (collection, docId, field) => {
 }
 
 export const updateDocumentField = (collection, docId, field, value) => {
-  const db = FirebaseDb;
-  const docRef = doc(db, collection, docId);
+  const docRef = doc(FirebaseDb, collection, docId);
   updateDoc(docRef, {
     [field]: value
   })  
@@ -72,5 +69,18 @@ export const updateDocumentField = (collection, docId, field, value) => {
   })
   .catch((error) => {
     console.error("Error updating document: ", error);
+  });
+}
+
+export const createDocument = (collection, docId, data) => {  
+  const userRef = doc(FirebaseDb, collection, docId);
+  setDoc(userRef, data)
+  // print added document to console
+  .then(() => {
+    console.log("Document written with ID: ", id, "to collection: ", collection);
+    console.log("Document data:", object);
+  })
+  .catch((error) => {
+    console.error("Error adding document: ", error);
   });
 }

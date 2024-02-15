@@ -3,9 +3,8 @@
 
 import { KeyboardAvoidingView, TextInput, StyleSheet, Text, View, Button } from 'react-native'
 import React, {useState} from 'react'
-import { FirebaseAuth,  FirebaseDb} from '../Firebase'
+import { FirebaseAuth,  FirebaseDb, createDocument} from '../Firebase'
 import { createUserWithEmailAndPassword, updateProfile } from "firebase/auth";
-import { doc, setDoc } from "firebase/firestore"; 
 
 const RegisterPage = ({ navigation }) => {
   const [username, setUsername] = useState('')
@@ -60,20 +59,12 @@ const RegisterPage = ({ navigation }) => {
       .catch((error) => alert(error.message));
      
     // add user to database
-    const userRef = doc(db, "users", id);
-    setDoc(userRef, {
+    const newUserObject = {
       username: username,
       email: email,
       newUser: true
-    })
-    // print added document to console
-    .then(() => {
-      console.log("Document written with ID: ", id);
-    })
-    .catch((error) => {
-      console.error("Error adding document: ", error);
-    });
-
+    }
+    createDocument('users', id, newUserObject);
     navigation.navigate('LoginPage')      
   }
 
