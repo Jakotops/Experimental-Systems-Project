@@ -7,6 +7,7 @@ import { FirebaseAuth,  FirebaseDb, createDocument} from '../Firebase'
 import { createUserWithEmailAndPassword, updateProfile } from "firebase/auth";
 
 const RegisterPage = ({ navigation }) => {
+
   const [username, setUsername] = useState('')
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
@@ -16,11 +17,6 @@ const RegisterPage = ({ navigation }) => {
   const [id, setId] = useState('')
 
   const auth = FirebaseAuth; 
-  const db = FirebaseDb;
-
-  const toggleShowPassword = (password) => {
-    setShowpassword(!password)
-  }
 
   const handleRegister = () => {
       //  Regex for password validation of at least 8 characters, 1 letter, 1 number, and 1 special character 
@@ -67,6 +63,7 @@ const RegisterPage = ({ navigation }) => {
       newUser: true
     }
     createDocument('users', id, newUserObject);
+    
     navigation.navigate('LoginPage')      
   }
 

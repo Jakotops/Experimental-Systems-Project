@@ -24,7 +24,7 @@ const LoginPage = ({navigation}) => {
     .catch((error) => alert(error.message));
   }
 
-  // Login in with the user
+  // Login in as a user
   const handleLogin = () => {
     signInWithEmailAndPassword(auth, email, password)
       .then((userCredential) => {
