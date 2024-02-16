@@ -2,11 +2,12 @@
 
 import { StyleSheet, Text, View } from 'react-native'
 import React from 'react'
+import DoubleList from '../components/lists/DoubleList'
 
 const PreferencePage = () => {
   return (
     <View>
-      <Text>PreferencePage</Text>
+      <DoubleList/>
     </View>
   )
 }
