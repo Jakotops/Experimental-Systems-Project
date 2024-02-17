@@ -18,7 +18,7 @@ const LoginPage = ({navigation}) => {
     .then((userCredential) => {
       // Signed in 
       const user = userCredential.user;
-      console.log(user.email)
+      console.log('User has been logged in');
       navigation.navigate('Authenticated')
     })
     .catch((error) => alert(error.message));
@@ -30,7 +30,6 @@ const LoginPage = ({navigation}) => {
       .then((userCredential) => {
         // Signed in 
         const user = userCredential.user;
-        console.log(user.email)
         navigation.navigate('Authenticated')
       })
       .catch((error) => alert(error.message));

@@ -3,7 +3,7 @@
 
 import { KeyboardAvoidingView, TextInput, StyleSheet, Text, View, Button } from 'react-native'
 import React, {useState} from 'react'
-import { FirebaseAuth,  FirebaseDb, createDocument} from '../Firebase'
+import { FirebaseAuth, createDocument} from '../Firebase'
 import { createUserWithEmailAndPassword, updateProfile } from "firebase/auth";
 
 const RegisterPage = ({ navigation }) => {
@@ -48,8 +48,6 @@ const RegisterPage = ({ navigation }) => {
         // Signed in 
         const user = userCredential.user;
         const createdId = user.uid
-        console.log(user.email + ' has been registered'); 
-        console.log("User ID: " + createdId);
         const newUserObject = {
           username: username,
           email: email,

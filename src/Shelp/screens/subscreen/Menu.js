@@ -14,10 +14,10 @@ const Menu = ({navigation}) => {
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth, (user) => {
       if (user) {
-        console.log('User is logged in');
+        //console.log('User is logged in');
         setId(user.uid);
       } else {
-        console.log('User is not logged in');
+        //console.log('User is not logged in');
       }
     })
     return unsubscribe;},[]);
