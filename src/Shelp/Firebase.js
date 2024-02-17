@@ -84,12 +84,13 @@ export const updateDocumentField = (collection, docId, field, value) => {
 // @Params docId (String): the document id
 // @Params data (Object): the data to store in the document
 export const createDocument = (collection, docId, data) => {  
+  console.log("Creating document with ID: ", docId, "in collection: ", collection, "with data: ", data);
   const userRef = doc(FirebaseDb, collection, docId);
   setDoc(userRef, data)
   // print added document to console
   .then(() => {
-    console.log("Document written with ID: ", id, "to collection: ", collection);
-    console.log("Document data:", object);
+    console.log("Document written with ID: ", docId, "to collection: ", collection);
+    console.log("Document data:", data);
   })
   .catch((error) => {
     console.error("Error adding document: ", error);

@@ -1,6 +1,7 @@
 // Sets the display screen for the menu
 import { StyleSheet, Text, View, Button } from 'react-native'
-import React, { useEffect } from 'react'
+import React, { useEffect, useState
+ } from 'react'
 import { FirebaseAuth, updateDocumentField } from '../../Firebase'
 import { signOut, onAuthStateChanged } from "firebase/auth";
 

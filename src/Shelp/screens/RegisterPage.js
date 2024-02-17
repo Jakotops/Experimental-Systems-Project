@@ -14,8 +14,6 @@ const RegisterPage = ({ navigation }) => {
   const [confirmPassword, setConfirmPassword] = useState('')
   const [showPassword, setShowpassword] = useState(false)
   const [showConfirmPassword, setShowConfirmPassword] = useState(false)
-  const [id, setId] = useState('')
-
   const auth = FirebaseAuth; 
 
   const handleRegister = () => {
@@ -49,22 +47,18 @@ const RegisterPage = ({ navigation }) => {
       .then((userCredential) => {
         // Signed in 
         const user = userCredential.user;
-        const id = user.uid
+        const createdId = user.uid
         console.log(user.email + ' has been registered'); 
-        console.log("User ID: " + id);
-        setId(id);
+        console.log("User ID: " + createdId);
+        const newUserObject = {
+          username: username,
+          email: email,
+          newUser: true
+        }
+        createDocument('users', createdId, newUserObject);
+        navigation.navigate('LoginPage');
        })
       .catch((error) => alert(error.message));
-     
-    // add user to database
-    const newUserObject = {
-      username: username,
-      email: email,
-      newUser: true
-    }
-    createDocument('users', id, newUserObject);
-    
-    navigation.navigate('LoginPage')      
   }
 
   return (
@@ -95,8 +89,8 @@ const RegisterPage = ({ navigation }) => {
       <Button title='Register' onPress={handleRegister} />
       <Button title="Return to Login" onPress={() => navigation.goBack()} />
     </KeyboardAvoidingView>
-  )
-}
+  )}
+
 
 export default RegisterPage
 
