@@ -14,8 +14,8 @@ export default function App() {
   return (
     <NavigationContainer>
       <Stack.Navigator>
-        <Stack.Screen options={{headerShown: false}} name="Authenticated" component={Authenticated} />
         <Stack.Screen options={{headerShown: false}} name="NonAuthenticated" component={NonAuthenticated} />  
+        <Stack.Screen options={{headerShown: false}} name="Authenticated" component={Authenticated} />
       </Stack.Navigator>
     </NavigationContainer>
   );
