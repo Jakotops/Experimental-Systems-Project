@@ -2,11 +2,15 @@
 import { StyleSheet, Text, View, TouchableOpacity } from 'react-native'
 import AsyncStorage from '@react-native-async-storage/async-storage'; // Used for storing data
 import React, { useState, useEffect } from 'react'
+import DietCard from '../cards/DietCard';
+import { useNavigation } from '@react-navigation/core';
 
 const RegularList = ({type}) => {
   let items = [];
 
+  const navigation = useNavigation();
   const [checkedItems, setCheckedItems] = useState({}); // State to store checked items
+  const [isDietCardVisible, setIsDietCardVisible] = useState(false); // State to manage DietCard visibility
 
   useEffect(() => { // React hook, it runs the function passed as the first argument (the effect function)
     // after every render if the dependencies listed in the second argument (the dependancy array) have changed
@@ -70,14 +74,20 @@ const RegularList = ({type}) => {
     }
   };
 
+  const arrowPress = (dietName) => {
+    navigation.navigate('DietCard', { dietName }); // Navigate to dietcard screen
+  };
+
   return ( // List is rendered using 'TouchableOpacity'
     <View>
       {items.map((item, index) => (
         <TouchableOpacity key={index} style={styles.itemContainer} onPress={() => toggleCheckbox(index)}>
           <View style={[styles.checkbox, checkedItems[index] && styles.checked]} /> 
           <Text>{item.name}</Text>
+          {type === 'diet' && <TouchableOpacity style={styles.arrowButton} onPress={() => arrowPress(item.name)}><Text style={styles.arrowIcon}>→</Text></TouchableOpacity>}
         </TouchableOpacity>
       ))}
+      {/*{isDietCardVisible && <DietCard/>}*/}
     </View>
   );
 };
@@ -98,6 +108,13 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     borderColor: '#000',
     marginRight: 10,
+  },
+  arrowButton: {
+    marginLeft: 'auto', // Pushes the arrow button to the right
+    paddingHorizontal: 10,
+  },
+  arrowIcon: {
+    fontSize: 20,
   },
   itemContainer: {
     flexDirection: 'row',

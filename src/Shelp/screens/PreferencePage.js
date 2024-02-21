@@ -3,12 +3,17 @@
 import { StyleSheet, Text, View, SafeAreaView } from 'react-native'
 import React from 'react'
 import DoubleList from '../components/lists/DoubleList'
+import DietCard from '../components/cards/DietCard'
+import { createNativeStackNavigator } from '@react-navigation/native-stack'
 
 const PreferencePage = () => {
+  const Stack = createNativeStackNavigator(); 
   return (
-    <SafeAreaView style={styles.container}>
-      <DoubleList/>
-    </SafeAreaView>
+
+  <Stack.Navigator>
+    <Stack.Screen name="DoubleList" component={DoubleList} />
+    <Stack.Screen name="DietCard" component={DietCard} />
+  </Stack.Navigator>
   )
 }
 
