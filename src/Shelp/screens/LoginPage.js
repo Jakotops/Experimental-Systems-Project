@@ -1,7 +1,7 @@
 // TO DO: Create a login page for the app using the following tutorial: https://youtu.be/ql4J6SpLXZA and firebase authentication
 import { TextInput, StyleSheet, Text, View, Button, KeyboardAvoidingView } from 'react-native'
 import React, { useState } from 'react'
-import { FirebaseAuth } from '../Firebase'
+import { FirebaseAuth } from '../Firebase/Firebase'
 import { signInWithEmailAndPassword } from "firebase/auth";
 
 

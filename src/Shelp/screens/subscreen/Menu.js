@@ -2,7 +2,8 @@
 import { StyleSheet, Text, View, Button } from 'react-native'
 import React, { useEffect, useState
  } from 'react'
-import { FirebaseAuth, updateDocumentField } from '../../Firebase'
+import { updateDocumentField } from '../../Firebase/FirestoreFunctions'
+import { FirebaseAuth } from '../../Firebase/Firebase'
 import { signOut, onAuthStateChanged } from "firebase/auth";
 
 const Menu = ({navigation}) => {

@@ -3,7 +3,8 @@
 import { View, Text } from 'react-native'
 import React, { useEffect } from 'react'
 
-import { FirebaseAuth,  readDocumentField } from '../Firebase'
+import { FirebaseAuth } from '../Firebase/Firebase'
+import { readDocumentField } from '../Firebase/FirestoreFunctions'
 import { onAuthStateChanged } from "firebase/auth";
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 
