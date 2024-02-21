@@ -97,5 +97,58 @@ async function getProductData(barcode, request_data){
   return toReturn;
 }
 
+/**
+ * @param barcode 
+ * @param barcode - exactly what you expect
+ * @param {Object} diet_data - Contains 2 list properties describing the dietary restrictions
+ *  user_diets        - Object list   A list of the diets the user on, where each diet is an object
+ *      Example:  Say the user has peanut allergy and gluten intolerance
+ *      [{"peanut_allergy": ["peanut", "peanut butter", "peanut oil"]}, {"gluten_free": ["wheat", "cereal", "barley", "rye"]}]
+ *  other_bd_igrdnts  - string list   A list of the other ingredients the user doesn't accept.
+ *      ["peanut", "peanut butter", "peanut oil"]
+ * 
+ * 
+ * @returns {Object} returns an object whose properties describe the results
+ *  toReturn.success          - boolean       describes whether the function succeeded
+ *  THE FOLLOWING PROPERTIES ONLY EXIST WHEN THE FETCH ATTEMPT SUCCEDES
+ *  toReturn.product_safety   - boolean       describes whether the product is safe 
+ *  toReturn.bad_ingrdts_fnd  - string list   A list of the ingredients found in the product that conflict with the user's dietary preferences
+ *  toReturn.diets_cntrdctd   - string list   A list of diets that conflict with the ingredients found in the product
+ *  toReturn.image_URL        - string        contains the URL to an image of the product
+ *  toReturn.product_name     - string        product name
+ */
+function evaluateProductGivenDietData(barcode, diet_data){
+  console.log(`Running evaluateProductGivenDietData`);
+
+  let dataStringForm = "JSON.stringify(product_data);";
+  console.log(dataStringForm);
+
+  getProductData(barcode, request_data)
+    .then((product_data) => {
+      let dataStringForm = JSON.stringify(product_data);
+      console.log(`Product data: ${dataStringForm}`);
+  });
+}
+
+
+function printProductData(barcode, request_data){
+  console.log(`Running printProductData`);
+
+  let dataStringForm = "JSON.stringify(product_data)";
+  console.log(dataStringForm);
+
+
+  getProductData(barcode, request_data)
+    .then((product_data) => {
+      dataStringForm = JSON.stringify(product_data);
+      console.log(`Product data: ${dataStringForm}`);
+  });
+
+  console.log(`After get:`);
+  console.log(dataStringForm);
+}
+printProductData(3017624010701, {ingrd_wanted: true, allergens_wanted: true, nutri_val_wanted: true, images_wanted: true});
+
+
 // No idea if I'm doing the exporting right
-export default getProductData;
+//export default getProductData;
