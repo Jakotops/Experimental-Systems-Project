@@ -117,6 +117,8 @@ async function getProductData(barcode, request_data){
  */
 function evaluateProductGivenDietData(barcode, diet_data){
   console.log(`Running evaluateProductGivenDietData`);
+  console.log(`Input Barcode: ${barcode}`);
+  console.log(`Diet data: ${JSON.stringify(diet_data)}`);
 
   // Initialise toReturn
   let toReturn = {success: false, product_safety: true, bad_ingrdts_fnd: [], diets_cntrdctd: [], image_URL: "", product_name: ""}
@@ -125,6 +127,8 @@ function evaluateProductGivenDietData(barcode, diet_data){
     .then((product_data) => {
       // Check fetch success
       if (product_data.fetchSuccess){
+        console.log(`Data retrieved: ${JSON.stringify(product_data)}`);
+
         
         // Extract data
         let unbreached_diets = diet_data.user_diets.slice(0);
@@ -135,14 +139,19 @@ function evaluateProductGivenDietData(barcode, diet_data){
         for (let curr_ing_num = 0; curr_ing_num < product_data.ingredient_data.length; curr_ing_num++){
           let current_ingredient = product_data.ingredient_data[curr_ing_num].text;
 
+          console.log(`Checking ingredient: ${JSON.stringify(current_ingredient)}`);
+
           // Compare with each of unbreached diets
           for (let curr_diet_num = 0; curr_diet_num < unbreached_diets.length; curr_diet_num++){
             let current_diet_object = unbreached_diets[curr_diet_num];
+
+            console.log(`Checking diet: ${JSON.stringify(current_diet_object)}`);
+
             let current_banned_ings = current_diet_object.banned_ingredients
             // If the ingredient is in the list of banned ingredients for this diet
             if (current_banned_ings.includes(current_ingredient)){
               toReturn.product_safety = false;
-              diets_cntrdctd.push(current_diet);
+              diets_cntrdctd.push(current_diet.name);
               new_unbreached_diets.splice(curr_diet_num, 1);
             }
           }
@@ -162,29 +171,31 @@ function evaluateProductGivenDietData(barcode, diet_data){
         toReturn.success = true;
       }
 
+
+      console.log(`Data to return: ${JSON.stringify(toReturn)}`);
       // Return data
       return toReturn;
   });
 }
 
 
-function printProductData(barcode, request_data){
-  console.log(`Running printProductData`);
+function testEvaluateProductGivenDietData(){
+  console.log(`Testing evaluateProductGivenDietData`);
 
-  let dataStringForm = "JSON.stringify(product_data)";
-  console.log(dataStringForm);
+  let nutella_barcode = 3017624010701;
+  let userDiets = [ {name: "peanut_allergy", banned_ingredients: ["peanut", "peanut butter", "peanut oil"]}, 
+                    {name: "gluten_free", banned_ingredients: ["wheat", "cereal", "barley", "rye"]}];
+  let other_banned_ings = ["peanut", "peanut butter", "peanut oil"];
 
+  let userDietDataObject = {user_diets: userDiets, other_bd_igrdnts: other_banned_ings};
+  
+  let returned_data = evaluateProductGivenDietData(nutella_barcode, userDietDataObject);
 
-  getProductData(barcode, request_data)
-    .then((product_data) => {
-      dataStringForm = JSON.stringify(product_data);
-      console.log(`Product data: ${dataStringForm}`);
-  });
+  console.log(`Data returned: ${JSON.stringify(returned_data)}`);
 }
 
 
-printProductData(3017624010701, {ingrd_wanted: true, allergens_wanted: true, nutri_val_wanted: true, images_wanted: true});
-
+testEvaluateProductGivenDietData();
 
 // No idea if I'm doing the exporting right
 //export default getProductData;
