@@ -2,7 +2,7 @@
 // and store the user information in the database
 
 import { KeyboardAvoidingView, TextInput, StyleSheet, Text, View, Button } from 'react-native'
-import React, {useState} from 'react'
+import React, { useState } from 'react'
 import { FirebaseAuth } from '../Firebase/Firebase'
 import { createDocument } from '../Firebase/FirestoreFunctions'
 import { createUserWithEmailAndPassword } from "firebase/auth";
