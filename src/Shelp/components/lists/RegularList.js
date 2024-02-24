@@ -83,7 +83,7 @@ const RegularList = ({type}) => {
       {items.map((item, index) => (
         <TouchableOpacity key={index} style={styles.itemContainer} onPress={() => toggleCheckbox(index)}>
           <View style={[styles.checkbox, checkedItems[index] && styles.checked]} /> 
-          <Text>{item.name}</Text>
+          <Text style={[styles.text]}>{item.name}</Text>
           {type === 'diet' && <TouchableOpacity style={styles.arrowButton} onPress={() => arrowPress(item.name)}><Text style={styles.arrowIcon}>→</Text></TouchableOpacity>}
         </TouchableOpacity>
       ))}
@@ -95,34 +95,39 @@ const RegularList = ({type}) => {
 export default RegularList
 
 const styles = StyleSheet.create({
-  button: {
-    padding: 10,
-    marginVertical: 5,
-    backgroundColor: '#DDDDDD',
-    borderRadius: 5,
-    alignItems: 'center',
-  },
   checkbox: {
-    width: 24,
-    height: 24,
+    width: 28,
+    height: 28,
     borderWidth: 1,
-    borderColor: '#000',
+    borderColor: 'gray',
     marginRight: 10,
   },
   arrowButton: {
     marginLeft: 'auto', // Pushes the arrow button to the right
-    paddingHorizontal: 10,
+    borderWidth: 1,
+    borderColor: 'gray',
+    width: 60, 
+    borderRadius: 15,
+    alignItems: 'center',
   },
   arrowIcon: {
-    fontSize: 20,
+    fontSize: 40,
   },
   itemContainer: {
     flexDirection: 'row',
     alignItems: 'center',
-    paddingVertical: 10,
-    paddingHorizontal: 16,
+    paddingVertical: 15,
+    paddingHorizontal: 23,
+    borderWidth: 1,
+    borderColor: 'gray',
+    marginVertical: 10,
+    marginHorizontal: 15,
+    borderRadius: 15,
   },
   checked: {
-    backgroundColor: '#77DD77', // Change the background color when checked
+    backgroundColor: '#4bcba3', // Change the background color when checked
+  },
+  text: {
+    fontSize: 35,
   },
 });

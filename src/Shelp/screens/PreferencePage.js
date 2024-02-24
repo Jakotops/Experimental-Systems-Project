@@ -10,12 +10,13 @@ import { createNativeStackNavigator } from '@react-navigation/native-stack'
 const PreferencePage = () => {
   const Stack = createNativeStackNavigator(); 
   return (
-
-  <Stack.Navigator>
-    <Stack.Screen name="DoubleList" component={DoubleList} />
-    <Stack.Screen name="DietCard" component={DietCard} />
-    <Stack.Screen name="ProductCardTest" component={ProductCard} />
-  </Stack.Navigator>
+  <SafeAreaView style={{ flex: 1 }}>
+    <Stack.Navigator>
+      <Stack.Screen name="Preference" component={DoubleList} options={{ headerShown: false }} />
+      <Stack.Screen name="DietCard" component={DietCard} />
+      <Stack.Screen name="ProductCardTest" component={ProductCard} />
+    </Stack.Navigator>
+  </SafeAreaView>
   )
 }
 

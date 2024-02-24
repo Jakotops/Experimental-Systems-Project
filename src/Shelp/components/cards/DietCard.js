@@ -7,9 +7,9 @@ const DietCard = ({route}) => {
   let items = [];
   // Populate the items array with ingredients
   items = [
-    { name: 'Ingredient 1' },
-    { name: 'Ingredient 2' },
-    { name: '...' },
+    { id: 1, name: 'Ingredient 1' },
+    { id: 2, name: 'Ingredient 2' },
+    { id: 3, name: '...' },
     // Add more ingredient items here as needed
   ];
   return (
