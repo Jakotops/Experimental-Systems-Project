@@ -29,13 +29,9 @@ export const readDocument = async (collection, docId) => {
     const docRef = doc(FirebaseDb, collection, docId);
     try {
       const docSnap = await getDoc(docRef);
-      if (docSnap.exists()) {
-        //console.log(docSnap.data());
-        //console.log(field, ":", docSnap.data()[field], "from document:", docId, "in collection:", collection);
-        return docSnap.data()[field];
-      } else {
-        console.log("No such document");
-      }
+      //console.log(docSnap.data());
+      //console.log(field, ":", docSnap.data()[field], "from document:", docId, "in collection:", collection);
+      return docSnap.data()[field];
     } catch (error) {
       console.log("Error getting document:", error);
     }
