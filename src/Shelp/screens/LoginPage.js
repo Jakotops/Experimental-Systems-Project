@@ -19,7 +19,10 @@ const LoginPage = ({navigation}) => {
       // Signed in 
       const user = userCredential.user;
       console.log('User has been logged in');
-      navigation.navigate('Authenticated')
+      navigation.reset({
+        index: 0,
+        routes: [{ name: "Authenticated" }]
+      });
     })
     .catch((error) => alert(error.message));
   }
@@ -30,7 +33,10 @@ const LoginPage = ({navigation}) => {
       .then((userCredential) => {
         // Signed in 
         const user = userCredential.user;
-        navigation.navigate('Authenticated')
+        navigation.reset({
+          index: 0,
+          routes: [{ name: "Authenticated" }]
+        });
       })
       .catch((error) => alert(error.message));
     
