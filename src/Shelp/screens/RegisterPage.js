@@ -3,8 +3,9 @@
 
 import { KeyboardAvoidingView, TextInput, StyleSheet, Text, View, Button } from 'react-native'
 import React, {useState} from 'react'
-import { FirebaseAuth, createDocument} from '../Firebase'
-import { createUserWithEmailAndPassword, updateProfile } from "firebase/auth";
+import { FirebaseAuth } from '../Firebase/Firebase'
+import { createDocument } from '../Firebase/FirestoreFunctions'
+import { createUserWithEmailAndPassword } from "firebase/auth";
 
 const RegisterPage = ({ navigation }) => {
 
