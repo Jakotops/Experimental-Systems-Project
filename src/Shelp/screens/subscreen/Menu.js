@@ -32,7 +32,10 @@ const Menu = ({navigation}) => {
       // Sets new user status to false (better implentation is to read status from the database to reduce writes
       updateDocumentField('users', id, 'newUser', false);
 
-      navigation.navigate('NonAuthenticated')
+      navigation.reset({
+        index: 0,
+        routes: [{ name: "NonAuthenticated" }]
+      });
     }).catch((error) => {
       console.log(error.message)
     });
