@@ -42,7 +42,7 @@ const CameraPage = () => {
     console.log('Type: ' + type + '\nData: ' + data)
     // dummy code below to check if modals are popping up correctly.
     // All it does is show a warning when a QR code is scanned, and show a 'Safe' modal when anything else is scanned
-    if (type == 'org.iso.QRCode') {
+    if (type == 256) {
       setIsWarningModalVisible(true);
     }
     else {
