@@ -1,0 +1,20 @@
+{
+  "ingredients": {
+    "1": {"name": "peanut", "allergies": ["peanut_allergy"]},
+    "2": {"name": "peanut butter", "allergies": ["peanut_allergy"]},
+    "3": {"name": "peanut oil", "allergies": ["peanut_allergy"]},
+    "4": {"name": "wheat", "allergies": ["gluten_free"]},
+    "5": {"name": "cereal", "allergies": ["gluten_free"]},
+    "6": {"name": "barley", "allergies": ["gluten_free"]},
+    "7": {"name": "rye", "allergies": ["gluten_free"]},
+    "8": {"name": "pork", "allergies": ["halal", "vegan", "vegetarian"]},
+    "9": {"name": "gelatin", "allergies": ["halal", "vegan", "vegetarian"]},
+    "10": {"name": "chicken", "allergies": ["vegetarian", "vegan"]},
+    "11": {"name": "beef", "allergies": ["vegetarian", "vegan"]},
+    "12": {"name": "pork", "allergies": ["vegetarian", "vegan"]},
+    "13": {"name": "meat", "allergies": ["vegetarian", "vegan"]},
+    "14": {"name": "meat extract", "allergies": ["vegetarian", "vegan"]},
+    "15": {"name": "eggs", "allergies": ["vegan"]},
+    "16": {"name": "cheese", "allergies": ["vegan", "dairy_free"]}
+  }
+}
