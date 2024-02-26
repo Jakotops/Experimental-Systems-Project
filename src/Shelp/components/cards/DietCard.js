@@ -16,8 +16,8 @@ const DietCard = ({route}) => {
     <SafeAreaView style={styles.container}>
       <Text style={styles.title}>{ dietName }</Text>
       <Text style={styles.subtitle}>Blacklisted ingredients:</Text>
-      {items.map((item, index) => (
-        <Text>{item.name}</Text>
+      {items.map(item => (
+        <Text key={item.id}>{item.name}</Text>
       ))}
     </SafeAreaView>
   )
