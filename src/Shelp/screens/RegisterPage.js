@@ -52,7 +52,9 @@ const RegisterPage = ({ navigation }) => {
         const newUserObject = {
           username: username,
           email: email,
-          newUser: true
+          newUser: true,
+          diets: [],
+          ingredients: []
         }
         createDocument('users', createdId, newUserObject);
         navigation.navigate('LoginPage');

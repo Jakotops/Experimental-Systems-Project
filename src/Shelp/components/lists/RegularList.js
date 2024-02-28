@@ -4,6 +4,7 @@ import AsyncStorage from '@react-native-async-storage/async-storage'; // Used fo
 import React, { useState, useEffect } from 'react'
 import DietCard from '../cards/DietCard';
 import { useNavigation } from '@react-navigation/core';
+import { updateDocumentField, getCurrentUserId } from '../../Firebase/FirestoreFunctions';
 
 const RegularList = ({type}) => {
   let items = [];
@@ -11,13 +12,14 @@ const RegularList = ({type}) => {
   const navigation = useNavigation();
   const [checkedItems, setCheckedItems] = useState({}); // State to store checked items
   const [isDietCardVisible, setIsDietCardVisible] = useState(false); // State to manage DietCard visibility
+  const userId = getCurrentUserId();
 
   useEffect(() => { // React hook, it runs the function passed as the first argument (the effect function)
     // after every render if the dependencies listed in the second argument (the dependancy array) have changed
 
     // Load checked items from AsyncStorage when the component mounts based on the 'type' prop
     // It sets the 'checkedItem' state with the loaded data
-
+      
     const loadCheckedItems = async () => { // An asynchronous function that loads checked items from AsyncStorage
       try {
         const storedCheckedItems = await AsyncStorage.getItem(`${type}_checked_items`); 
@@ -31,16 +33,32 @@ const RegularList = ({type}) => {
         console.error('Error loading checked items:', error);
       }
     };
+    // Save checked items to Firestore when the component unmounts based on the 'type' prop
+    const saveCheckedItems = async () => { 
+      try {      
+        let checkedIds = [];
+        // Get the checked items from AsyncStorage
+        const checkboxObject = JSON.parse(await AsyncStorage.getItem(`${type}_checked_items`));
+        // Loop through the 'checkedItems' state and push the checked items to the 'checkedIds' array
+        for (const [key, value] of Object.entries(checkboxObject)) {
+          if (value === true) {
+            checkedIds.push(key);
+          }
+        }
+        // Save the checked items to Firestore using the 'updateDocumentField' function
+        updateDocumentField('users', userId, type, checkedIds);
+      } catch (error) {
+        console.error('Error saving checked items:', error);
+      }
+    }
     loadCheckedItems(); // Function called when the prop changes
-    console.log("Rendered!")
     return () => {
-      const savedItems = AsyncStorage.getItem(`${type}_checked_items`).then()
-      console.log(savedItems)
+      saveCheckedItems(); // Function called when the component unmounts ("derenders")
     }
   }, [type]);
 
   // Check the type prop and populate the items array accordingly
-  if (type === 'diet') {
+  if (type === 'diets') {
     items = [
       { name: 'Hindu' },
       { name: 'Halal' },
@@ -88,7 +106,7 @@ const RegularList = ({type}) => {
         <TouchableOpacity key={index} style={styles.itemContainer} onPress={() => toggleCheckbox(index)}>
           <View style={[styles.checkbox, checkedItems[index] && styles.checked]} /> 
           <Text style={[styles.text]}>{item.name}</Text>
-          {type === 'diet' && <TouchableOpacity style={styles.arrowButton} onPress={() => arrowPress(item.name)}><Text style={styles.arrowIcon}>→</Text></TouchableOpacity>}
+          {type === 'diets' && <TouchableOpacity style={styles.arrowButton} onPress={() => arrowPress(item.name)}><Text style={styles.arrowIcon}>→</Text></TouchableOpacity>}
         </TouchableOpacity>
       ))}
       {/*{isDietCardVisible && <DietCard/>}*/}

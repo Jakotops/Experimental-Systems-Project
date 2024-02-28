@@ -51,7 +51,7 @@ const DoubleList = () => {
       <View>
         {showDiet && (
           <View>
-            <RegularList type = 'diet'/>
+            <RegularList type = 'diets'/>
           </View>
         )}
         {showIngredients && (
