@@ -31,8 +31,12 @@ const RegularList = ({type}) => {
         console.error('Error loading checked items:', error);
       }
     };
-
     loadCheckedItems(); // Function called when the prop changes
+    console.log("Rendered!")
+    return () => {
+      const savedItems = AsyncStorage.getItem(`${type}_checked_items`).then()
+      console.log(savedItems)
+    }
   }, [type]);
 
   // Check the type prop and populate the items array accordingly
