@@ -193,9 +193,3 @@ function testEvaluateProductGivenDietData(){
 
   console.log(`Data returned: ${JSON.stringify(returned_data)}`);
 }
-
-
-testEvaluateProductGivenDietData();
-
-// No idea if I'm doing the exporting right
-//export default getProductData;
