@@ -1,5 +1,5 @@
 // Sets the display screen for the menu
-import { StyleSheet, Text, View, Button } from 'react-native'
+import { StyleSheet, Text, View, Button, TouchableOpacity } from 'react-native'
 import React, { useEffect, useState
  } from 'react'
 import { FirebaseAuth, updateDocumentField } from '../../Firebase'
@@ -38,15 +38,67 @@ const Menu = ({navigation}) => {
   }
 
   return (
-    <View>
-      <Text>Menu</Text>
-      <Button title="History" onPress={() => navigation.navigate('History')} />
-      <Button title="Settings" onPress={() => navigation.navigate('Settings')} />
-      <Button title="Logout" onPress={handleLogout} />
+    <View style={styles.container}>
+    <View style={styles.headerContainer}>
+    <Text style={styles.greetingText}>Hello User</Text>
     </View>
-  )
+
+    <View style={styles.buttonContainer}>
+      <TouchableOpacity style={styles.button} onPress={() => navigation.navigate('History')}>
+        <Text style={styles.buttonText}>History</Text>
+      </TouchableOpacity>
+      <TouchableOpacity style={styles.button} onPress={() => navigation.navigate('Settings')}>
+        <Text style={styles.buttonText}>Settings</Text>
+      </TouchableOpacity>
+      <TouchableOpacity style={styles.button} onPress={handleLogout}>
+        <Text style={styles.buttonText}>Logout</Text>
+      </TouchableOpacity>
+    </View>
+    </View>
+  );
 }
 
 export default Menu
 
-const styles = StyleSheet.create({})
+const styles = StyleSheet.create({
+
+  headerContainer: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+    paddingTop: 50, // Adjust as needed for spacing from the top
+  },
+
+  buttonContainer: {
+    flex: 2,
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+
+  container: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+
+  button: {
+    backgroundColor: 'orange',
+    paddingHorizontal: 20,
+    paddingVertical: 10,
+    borderRadius: 20,
+    marginVertical: 10,
+  },
+
+  buttonText: {
+    color: 'white',
+    fontSize: 18,
+    fontWeight: 'bold',
+  },
+
+  greetingText:{
+    color: 'orange',
+    fontSize: 32, // Increase font size
+    fontWeight: 'bold',
+    //textTransform: 'uppercase', // Example text transformation
+  },
+});
