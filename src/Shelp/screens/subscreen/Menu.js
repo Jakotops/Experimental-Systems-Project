@@ -2,7 +2,8 @@
 import { StyleSheet, Text, View, Button } from 'react-native'
 import React, { useEffect, useState
  } from 'react'
-import { FirebaseAuth, updateDocumentField } from '../../Firebase'
+import { updateDocumentField } from '../../Firebase/FirestoreFunctions'
+import { FirebaseAuth } from '../../Firebase/Firebase'
 import { signOut, onAuthStateChanged } from "firebase/auth";
 
 const Menu = ({navigation}) => {
@@ -31,7 +32,10 @@ const Menu = ({navigation}) => {
       // Sets new user status to false (better implentation is to read status from the database to reduce writes
       updateDocumentField('users', id, 'newUser', false);
 
-      navigation.navigate('NonAuthenticated')
+      navigation.reset({
+        index: 0,
+        routes: [{ name: "NonAuthenticated" }]
+      });
     }).catch((error) => {
       console.log(error.message)
     });
