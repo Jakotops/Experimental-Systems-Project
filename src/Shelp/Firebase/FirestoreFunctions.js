@@ -1,5 +1,5 @@
 import { doc, setDoc, getDoc, updateDoc } from "firebase/firestore";
-import { FirebaseDb } from "./Firebase";
+import { FirebaseDb, FirebaseAuth } from "./Firebase";
 
 // Reads a document from the database
 // @Params collection (String): the collection to store the document
@@ -72,4 +72,13 @@ export const readDocument = async (collection, docId) => {
       console.error("Error adding document: ", error);
     });
   }
-  
+
+  export const getCurrentUserId = () => {
+    const user = FirebaseAuth.currentUser;
+    if (user) {
+      return user.uid;
+    } else {
+      console.log("No user is currently logged in.");
+      return null;
+    }
+  }

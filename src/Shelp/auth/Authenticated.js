@@ -53,7 +53,10 @@ function AuthenticatedTabs(){
     // Tab navigator screen is intialized to the preference page if the user is new, otherwise the camera page
     <Tab.Navigator
     initialRouteName={newUser ? "Preference" : "Camera"}
-    screenOptions={{headerShown:false}}
+    screenOptions={{
+      headerShown:false,
+      unmountOnBlur:true
+    }}
     >
       <Tab.Screen name="Profile" component={ProfilePage} />
       <Tab.Screen name="Camera" component={Camerapage} />
