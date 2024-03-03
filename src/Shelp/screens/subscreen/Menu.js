@@ -2,14 +2,14 @@
 import { StyleSheet, Text, View, Button, TouchableOpacity } from 'react-native'
 import React, { useEffect, useState
  } from 'react'
-import { FirebaseAuth, updateDocumentField } from '../../Firebase'
+import { FirebaseAuth, updateDocumentField, readDocumentField } from '../../Firebase'
 import { signOut, onAuthStateChanged } from "firebase/auth";
 
 const Menu = ({navigation}) => {
 
   const [id, setId] = useState('');
   const auth = FirebaseAuth;
-  
+  const [currentUsername, setCurrentUsername] = useState(''); // [1
   // Checks if the user is logged in on the menu screen
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth, (user) => {
@@ -20,6 +20,25 @@ const Menu = ({navigation}) => {
         //console.log('User is not logged in');
       }
     })
+
+    const getCurrentUserId = () => {
+      const user = FirebaseAuth.currentUser;
+      if (user) {
+        return user.uid;
+      } else {
+        console.log("No user is currently logged in.");
+        return null;
+      }
+    }
+
+    const currentUserId = getCurrentUserId();
+    let username = '';
+    if (currentUserId) {
+      readDocumentField('users', currentUserId, 'username').then((result) => {
+      username = result;
+      setCurrentUsername(username);
+      });
+    }
     return unsubscribe;},[]);
     
 
@@ -40,7 +59,7 @@ const Menu = ({navigation}) => {
   return (
     <View style={styles.container}>
     <View style={styles.headerContainer}>
-    <Text style={styles.greetingText}>Hello User</Text>
+    <Text style={styles.greetingText}>Hello {currentUsername}</Text>
     </View>
 
     <View style={styles.buttonContainer}>
