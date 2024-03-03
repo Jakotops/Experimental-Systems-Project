@@ -76,6 +76,7 @@ export const readDocument = async (collection, docId) => {
   export const getCurrentUserId = () => {
     const user = FirebaseAuth.currentUser;
     if (user) {
+      console.log("Current user id: " + user.uid);
       return user.uid;
     } else {
       console.log("No user is currently logged in.");

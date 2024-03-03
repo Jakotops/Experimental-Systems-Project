@@ -4,6 +4,9 @@ import { StyleSheet, Text, TouchableOpacity, View, Button } from 'react-native';
 import { BarCodeScanner } from 'expo-barcode-scanner';
 import WarningAlert from '../components/modals/WarningAlert';
 import SafeAlert from '../components/modals/SafeAlert';
+import { idToObject } from "../Helpers/Id_To_Object_Mapper";
+import { getProductData, evaluateProductGivenDietData } from "../Helpers/API_Handling_Module";
+import { getCurrentUserId } from '../Firebase/FirestoreFunctions';
 
 const CameraPage = () => {
   const [hasPermission, setHasPermission] = useState(null);
@@ -11,7 +14,7 @@ const CameraPage = () => {
   const [text, setText] = useState('Not yet scanned');
   const [isWarningModalVisible, setIsWarningModalVisible] = useState(false);
   const [isSafeModalVisible, setIsSafeModalVisible] = useState(false);
-
+  const [dietData, setDietData] = useState({userDiets: [], other_banned_ings: []});
 
   // close warning popup modal
   const onWarningModalClose = () => {
@@ -30,23 +33,56 @@ const CameraPage = () => {
     })()
   }
 
-  // Request for camera permission
+  // Request for camera permission and get the current user id
   useEffect(() => {
     askForCameraPermission();
+
+
+    // Get the current user's dietary preferences
+    const retriveUserPreferences = async () => {
+      try {
+        const fetchedId = getCurrentUserId();
+        console.log("Current user id: " + fetchedId);
+        const results = await idToObject(fetchedId);
+        const resultsObject = {
+          user_diets: results[0],
+          other_bd_igrdnts: results[1]
+        }
+        setDietData(resultsObject);
+      } catch (error) {
+        console.log("Error in getting user diets and ingredients: " + error);
+      }
+    } 
+    retriveUserPreferences();
   }, []);
 
   // What happens when we scan the barcode
-  const handleBarCodeScanned = ({ type, data }) => {
+  const handleBarCodeScanned = async ({ type, data }) => {
     setScanned(true);
     setText(data);
     console.log('Type: ' + type + '\nData: ' + data)
     // dummy code below to check if modals are popping up correctly.
     // All it does is show a warning when a QR code is scanned, and show a 'Safe' modal when anything else is scanned
-    if (type == 256) {
+    const barcodeResults = await evaluateProductGivenDietData(data, dietData);
+    console.log("Barcode results: "+ JSON.stringify(barcodeResults));
+    let modalText = "";
+    if (!barcodeResults.success){
+      modalText = "Error in fetching product data";
+      setText(modalText);
       setIsWarningModalVisible(true);
+      return;
+    }
+    if (barcodeResults.product_safety){
+      modalText = barcodeResults.product_name + "\nThis product is safe for you!";
+      setText(modalText);
+      setIsSafeModalVisible(true);
+      return;
     }
     else {
-      setIsSafeModalVisible(true);
+      modalText = barcodeResults.product_name + "\nThis product is not safe for you!" + "\nConflicting diets: " + barcodeResults.diets_cntrdctd + "\nConflicting ingredients: " + barcodeResults.bad_ingrdts_fnd;
+      setText(modalText);
+      setIsWarningModalVisible(true);
+      return;
     }
   };
 
