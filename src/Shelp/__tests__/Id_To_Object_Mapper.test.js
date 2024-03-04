@@ -62,6 +62,24 @@ test('The UserIngredients array should contain the ingredients that the user has
     expect(UserIngredients).toEqual(["peanut", "peanut butter", "meat extract", "eggs"])
   });
 
+test ('Both the UserDiets and UserIngredients array contain the correct values', async () => {
+
+  const userId = 'ziOe4fE5hMSI21P33lgZkLDiwhh2';
+  const [UserDiets, UserIngredients] = await idToObject(userId);
+  expect(UserDiets).toEqual([
+    {
+      "name": "peanut_allergy", "banned ingredients": ["peanut", "peanut butter", "peanut oil"]   
+    },
+    {
+      "name": "vegan",          "banned_ingredients": ["pork", "gelatin", "chicken", "beef", "pork", "meat", "meat extract", "eggs", "cheese"]
+    },
+    {
+      "name": "dairy_free",     "banned_ingredients": ["cheese"]
+    }
+  ]);
+  expect(UserIngredients).toEqual(["peanut", "peanut butter", "meat extract", "eggs"]);
+});
+
 test('returns an error message if the user id is invalid', async () => {
   const userId = 'notAValidId';
   await expect(idToObject(userId)).rejects.toMatch("Error getting document");
