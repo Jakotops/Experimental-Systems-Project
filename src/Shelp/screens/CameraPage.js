@@ -6,7 +6,7 @@ import WarningAlert from '../components/modals/WarningAlert';
 import SafeAlert from '../components/modals/SafeAlert';
 import { idToObject } from "../Helpers/Id_To_Object_Mapper";
 import { getProductData, evaluateProductGivenDietData } from "../Helpers/API_Handling_Module";
-import { getCurrentUserId } from '../Firebase/FirestoreFunctions';
+import { getCurrentUserId, readDocmentsMatchingField, createDocument, createDocumentWithAutoId } from '../Firebase/FirestoreFunctions';
 
 const CameraPage = () => {
   const [hasPermission, setHasPermission] = useState(null);
@@ -15,6 +15,7 @@ const CameraPage = () => {
   const [isWarningModalVisible, setIsWarningModalVisible] = useState(false);
   const [isSafeModalVisible, setIsSafeModalVisible] = useState(false);
   const [dietData, setDietData] = useState({userDiets: [], other_banned_ings: []});
+  const [currentUserId, setCurrentUserId] = useState("");
 
   // close warning popup modal
   const onWarningModalClose = () => {
@@ -76,14 +77,41 @@ const CameraPage = () => {
       modalText = barcodeResults.product_name + "\nThis product is safe for you!";
       setText(modalText);
       setIsSafeModalVisible(true);
-      return;
     }
     else {
       modalText = barcodeResults.product_name + "\nThis product is not safe for you!" + "\nConflicting diets: " + barcodeResults.diets_cntrdctd + "\nConflicting ingredients: " + barcodeResults.bad_ingrdts_fnd;
       setText(modalText);
       setIsWarningModalVisible(true);
-      return;
     }
+    const currentUserId = getCurrentUserId();
+    const userFirestoreProductDocuments = await readDocmentsMatchingField("products", "userId", currentUserId);
+    console.log("User history: " + JSON.stringify(userFirestoreProductDocuments));
+    for (let i = 0; i < userFirestoreProductDocuments.length; i++){
+      if (userFirestoreProductDocuments[i].barcode === data){
+        console.log("Product already scanned");
+        return;
+      }
+    }
+    console.log("Product not scanned before");
+    // Add the product to the user's history - To Do: Ingredients need to be preprocessed
+    const scannedProductInfo = await getProductData(data, {ingrd_wanted: true, images_wanted: true, nutri_val_wanted: true, allergens_wanted: true}); 
+    console.log("Scanned product info: " + JSON.stringify(scannedProductInfo));
+    const firestoreProductData = { 
+      userId : currentUserId,
+      barcode : data,
+      productName : barcodeResults.product_name,
+      productSafety : barcodeResults.product_safety,
+      productIngredients : scannedProductInfo.ingredient_data ? scannedProductInfo.ingredient_data : [],
+      productNutrition : scannedProductInfo.nutriscore_grade ? scannedProductInfo.nutriscore_grade : "",
+      productAllergens : scannedProductInfo.allergens ? scannedProductInfo.allergens : [],
+      productImage: scannedProductInfo.image_data ? scannedProductInfo.image_data : ""
+      ,
+      flaggedIngredients : barcodeResults.bad_ingrdts_fnd,
+      flaggedDiets : barcodeResults.diets_cntrdctd
+    }
+    console.log("Firestore product data: " + JSON.stringify(firestoreProductData));
+    createDocumentWithAutoId("products", firestoreProductData);
+
   };
 
   const renderCamera = () => {

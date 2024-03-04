@@ -1,4 +1,4 @@
-import { doc, setDoc, getDoc, updateDoc } from "firebase/firestore";
+import { doc, setDoc, getDoc, updateDoc, collection, query, where, getDocs, addDoc } from "firebase/firestore";
 import { FirebaseDb, FirebaseAuth } from "./Firebase";
 
 // Reads a document from the database
@@ -36,6 +36,30 @@ export const readDocument = async (collection, docId) => {
       console.log("Error getting document:", error);
     }
   }
+
+  // Reads all documents from a collection in the database if they match a field
+  // @Params chosenCollection (String): the collection to store the document
+  // @Params field (String): the field to match
+  // @Params value: the value to match the field to
+  // @Returns (Array): an array of documents that match the field
+  
+  export const readDocmentsMatchingField = async (chosenCollection, field, value) => {
+    console.log("Reading documents from collection: ", chosenCollection, "where field: ", field, "is equal to: ", value);
+    console.log("field: ", field, "value: ", value);
+    const q = query(collection(FirebaseDb, chosenCollection), where(field, '==', value));
+    try{
+      const querySnapshot = await getDocs(q);
+      let results = [];
+      querySnapshot.forEach((doc) => {
+        console.log(doc.id, " => ", doc.data());
+        results.push(doc.data());
+      });
+      return results;
+    }
+    catch (error) {
+      console.log("Error getting documents:", error);
+    }
+  }
   
   // Update a field in a document of the database
   // @Params collection (String): the collection to store the document
@@ -71,8 +95,25 @@ export const readDocument = async (collection, docId) => {
     .catch((error) => {
       console.error("Error adding document: ", error);
     });
+  } 
+
+  // Create a new document in a collection of the database with an auto-generated id
+  // @Params collection (String): the collection to store the document
+  // @Params data (Object): the data to store in the document
+  export const createDocumentWithAutoId = (selectedCollection, data) => {
+    const docRef = collection(FirebaseDb, selectedCollection);
+    addDoc(docRef, data)
+    .then((docRef) => {
+      //console.log("Document written with ID: ", docRef.id, "to collection: ", collection);
+      //console.log("Document data:", data);
+    })
+    .catch((error) => {
+      console.error("Error adding document: ", error);
+    });
   }
 
+
+  // Get the current user id
   export const getCurrentUserId = () => {
     const user = FirebaseAuth.currentUser;
     if (user) {

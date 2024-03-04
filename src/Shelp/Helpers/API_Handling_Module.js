@@ -135,7 +135,7 @@ export async function evaluateProductGivenDietData(barcode, diet_data){
     // Check each ingredient
     let ingredient_list = [];
     for (let curr_ing_num = 0; curr_ing_num < product_data.ingredient_data.length; curr_ing_num++){
-      let current_ingredient = product_data.ingredient_data[curr_ing_num].text.toLowerCase();
+      let current_ingredient = product_data.ingredient_data[curr_ing_num].id.toLowerCase();
 
       console.log(`Checking ingredient: ${JSON.stringify(current_ingredient)}`);
 
@@ -147,8 +147,12 @@ export async function evaluateProductGivenDietData(barcode, diet_data){
 
         let current_banned_ings = current_diet_object.banned_ingredients
         // If the ingredient is in the list of banned ingredients for this diet
+
+        // Iterate through the banned ingredients in the current diet
         for (let selected_banned_ing_num = 0; selected_banned_ing_num < current_banned_ings.length; selected_banned_ing_num++){
           let selected_banned_ingredient = current_banned_ings[selected_banned_ing_num];
+
+          // Checks if product ingredient contains the banned ingredient or if the banned ingredient contains the product ingredient as a substring
           if (current_ingredient.includes(selected_banned_ingredient) || selected_banned_ingredient.includes(current_ingredient)){
             toReturn.product_safety = false;
             if (!toReturn.bad_ingrdts_fnd.includes(current_ingredient)){
@@ -164,6 +168,8 @@ export async function evaluateProductGivenDietData(barcode, diet_data){
       // Compare with the list of other banned ingredients
       for (let other_selected_banned_ing_num = 0; other_selected_banned_ing_num < diet_data.other_bd_igrdnts.length; other_selected_banned_ing_num++){
         let other_selected_banned_ingredient = diet_data.other_bd_igrdnts[other_selected_banned_ing_num];
+        
+        // Checks if product ingredient contains the banned ingredient or if the banned ingredient contains the product ingredient as a substring
         if (current_ingredient.includes(other_selected_banned_ingredient) || other_selected_banned_ingredient.includes(current_ingredient)){
           toReturn.product_safety = false;
           if (!toReturn.bad_ingrdts_fnd.includes(current_ingredient)){
