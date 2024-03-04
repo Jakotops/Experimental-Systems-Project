@@ -1,11 +1,12 @@
 // TO DO: Create a reusable list component that conditionally renders the checkmarks or arrow buttons based on the props passed to it
-import { StyleSheet, Text, View, TouchableOpacity } from 'react-native'
+import { StyleSheet, Text, View, TouchableOpacity, ScrollView } from 'react-native'
 import AsyncStorage from '@react-native-async-storage/async-storage'; // Used for storing data
 import React, { useState, useEffect } from 'react'
 import DietCard from '../cards/DietCard';
 import { useNavigation } from '@react-navigation/core';
 import { updateDocumentField, getCurrentUserId } from '../../Firebase/FirestoreFunctions';
-
+import Diets from '../../Diets.json';
+import Ingredients from '../../Ingredients.json';
 const RegularList = ({type}) => {
   let items = [];
 
@@ -58,24 +59,10 @@ const RegularList = ({type}) => {
   }, [type]);
 
   // Check the type prop and populate the items array accordingly
-  if (type === 'diets') {
-    items = [
-      { name: 'Hindu' },
-      { name: 'Halal' },
-      { name: 'Kosher' },
-      { name: 'Vegan' },
-      { name: 'Vegetarian' },
-      { name: '...' },
-      // Add more diet items here as needed
-    ];
+  if (type === 'diet') {
+    items = Object.values(Diets.diets).map(diet => ({ name: diet.name }));
   } else if (type === 'ingredients') {
-    // Populate the items array with ingredients
-    items = [
-      { name: 'Ingredient 1' },
-      { name: 'Ingredient 2' },
-      { name: '...' },
-      // Add more ingredient items here as needed
-    ];
+    items = Object.values(Ingredients.ingredients).map(ingredient => ({ name: ingredient.name }));
   }
 
   // Function to toggle the checked state of an item
@@ -101,7 +88,7 @@ const RegularList = ({type}) => {
   };
 
   return ( // List is rendered using 'TouchableOpacity'
-    <View>
+    <ScrollView>
       {items.map((item, index) => (
         <TouchableOpacity key={index} style={styles.itemContainer} onPress={() => toggleCheckbox(index)}>
           <View style={[styles.checkbox, checkedItems[index] && styles.checked]} /> 
@@ -110,7 +97,7 @@ const RegularList = ({type}) => {
         </TouchableOpacity>
       ))}
       {/*{isDietCardVisible && <DietCard/>}*/}
-    </View>
+    </ScrollView>
   );
 };
 
