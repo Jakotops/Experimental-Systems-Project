@@ -13,7 +13,7 @@ const PreferencePage = () => {
   <SafeAreaView style={{ flex: 1 }}>
     <Stack.Navigator>
       <Stack.Screen name="Selection" component={DoubleList} options={{ headerShown: false }} />
-      <Stack.Screen name="DietCard" component={DietCard} />
+      <Stack.Screen name="Diet Card" component={DietCard} />
       <Stack.Screen name="ProductCardTest" component={ProductCard} />
     </Stack.Navigator>
   </SafeAreaView>
