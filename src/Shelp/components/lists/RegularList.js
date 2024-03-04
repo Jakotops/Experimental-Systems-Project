@@ -1,5 +1,5 @@
 // TO DO: Create a reusable list component that conditionally renders the checkmarks or arrow buttons based on the props passed to it
-import { StyleSheet, Text, View, TouchableOpacity } from 'react-native'
+import { StyleSheet, Text, View, TouchableOpacity, ScrollView } from 'react-native'
 import AsyncStorage from '@react-native-async-storage/async-storage'; // Used for storing data
 import React, { useState, useEffect } from 'react'
 import DietCard from '../cards/DietCard';
@@ -44,6 +44,9 @@ const RegularList = ({type}) => {
       { name: 'Vegan' },
       { name: 'Vegetarian' },
       { name: '...' },
+      { name: '...' },
+      { name: '...' },
+      { name: '...' },
       // Add more diet items here as needed
     ];
   } else if (type === 'ingredients') {
@@ -75,11 +78,11 @@ const RegularList = ({type}) => {
   };
 
   const arrowPress = (dietName) => {
-    navigation.navigate('DietCard', { dietName }); // Navigate to dietcard screen
+    navigation.navigate('Diet Card', { dietName }); // Navigate to dietcard screen
   };
 
   return ( // List is rendered using 'TouchableOpacity'
-    <View>
+    <ScrollView contentContainerStyle={[styles.scrollContainer]}>
       {items.map((item, index) => (
         <TouchableOpacity key={index} style={styles.itemContainer} onPress={() => toggleCheckbox(index)}>
           <View style={[styles.checkbox, checkedItems[index] && styles.checked]} /> 
@@ -88,13 +91,17 @@ const RegularList = ({type}) => {
         </TouchableOpacity>
       ))}
       {/*{isDietCardVisible && <DietCard/>}*/}
-    </View>
+    </ScrollView>
   );
 };
 
 export default RegularList
 
 const styles = StyleSheet.create({
+  scrollContainer: {
+    flexGrow: 1,
+    paddingBottom: 250, 
+  },
   checkbox: {
     width: 28,
     height: 28,
