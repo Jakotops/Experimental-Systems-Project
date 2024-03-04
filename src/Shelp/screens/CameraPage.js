@@ -81,12 +81,25 @@ const CameraPage = () => {
   // Return the main view
   return (
     <View style={styles.container}>
-      <Text style={styles.paragraph}>Scan a barcode!</Text>
 
       {renderCamera()}
 
-      {scanned && <Button title={'Scan again?'} onPress={() => setScanned(false)} style={styles.button}/>}
+      <View style={styles.paragraphContainer}>
+        <Text style={styles.paragraph}>Scan a barcode!</Text>
+      </View>
 
+{/*       <View style={styles.buttonContainer}>
+        {scanned && <Button title={'Scan again?'} onPress={() => setScanned(false)} style={styles.button} color='black'/>}
+      </View> */}
+
+      {scanned && (
+        <View style={styles.buttonContainer}>
+          <TouchableOpacity onPress={() => setScanned(false)}>
+            <Text style={styles.paragraph}>Scan again?</Text>
+          </TouchableOpacity>
+        </View>
+      )}
+      
       <WarningAlert isVisible={isWarningModalVisible} onClose={onWarningModalClose} data={text}/>
       <SafeAlert isVisible={isSafeModalVisible} onClose={onSafeModalClose} data={text}/>
     </View>
@@ -110,16 +123,27 @@ const styles = StyleSheet.create({
     fontWeight: 'bold',
     marginBottom: 20,
   },
+  paragraphContainer: {
+    backgroundColor: '#f19a33', 
+    padding: 40,
+    borderRadius: 5,
+    marginTop: 20, 
+    width: '100%',
+    position: 'absolute',
+    bottom: 1, 
+  },
   paragraph: {
-    fontSize: 16,
-    marginBottom: 40,
+    fontSize: 30,
+    fontWeight: 'bold',
+    color: '#FFFFFF', 
+    textAlign: 'center',
   },
   cameraContainer: {
     width: '80%',
     aspectRatio: 1,
     overflow: 'hidden',
     borderRadius: 10,
-    marginBottom: 40,
+    marginBottom: 125,
   },
   camera: {
     flex: 1,
@@ -129,10 +153,20 @@ const styles = StyleSheet.create({
     paddingHorizontal: 20,
     paddingVertical: 10,
     borderRadius: 5,
-  },
+  }, 
   buttonText: {
     color: 'white',
     fontSize: 16,
     fontWeight: 'bold',
+  },
+  buttonContainer: {
+    backgroundColor: '#f19a33', 
+    padding: 40,
+    borderRadius: 5,
+    marginTop: 20, 
+    width: '100%',
+    position: 'absolute',
+    bottom: 1,
+    borderWidth: 1, 
   },
 });
