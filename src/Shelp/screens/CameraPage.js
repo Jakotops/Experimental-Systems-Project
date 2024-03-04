@@ -43,7 +43,6 @@ const CameraPage = () => {
     const retriveUserPreferences = async () => {
       try {
         const fetchedId = getCurrentUserId();
-        console.log("Current user id: " + fetchedId);
         const results = await idToObject(fetchedId);
         const resultsObject = {
           user_diets: results[0],
@@ -61,31 +60,41 @@ const CameraPage = () => {
   const handleBarCodeScanned = async ({ type, data }) => {
     setScanned(true);
     setText(data);
-    console.log('Type: ' + type + '\nData: ' + data)
-    // dummy code below to check if modals are popping up correctly.
-    // All it does is show a warning when a QR code is scanned, and show a 'Safe' modal when anything else is scanned
+    //console.log('Type: ' + type + '\nData: ' + data)
+    // Check if the product is safe for the user
     const barcodeResults = await evaluateProductGivenDietData(data, dietData);
-    console.log("Barcode results: "+ JSON.stringify(barcodeResults));
+    //console.log("Barcode results: "+ JSON.stringify(barcodeResults));
     let modalText = "";
+    // Checks if there is an error in fetching the product data
     if (!barcodeResults.success){
       modalText = "Error in fetching product data";
       setText(modalText);
       setIsWarningModalVisible(true);
       return;
     }
-    if (barcodeResults.product_safety){
-      modalText = barcodeResults.product_name + "\nThis product is safe for you!";
-      setText(modalText);
-      setIsSafeModalVisible(true);
-    }
-    else {
-      modalText = barcodeResults.product_name + "\nThis product is not safe for you!" + "\nConflicting diets: " + barcodeResults.diets_cntrdctd + "\nConflicting ingredients: " + barcodeResults.bad_ingrdts_fnd;
+    // If the product has no ingredients, display a warning
+    if (barcodeResults.no_ingrdts_fnd){
+      modalText = barcodeResults.product_name + "\nWarning: No ingredients found for this product";
       setText(modalText);
       setIsWarningModalVisible(true);
     }
+    // If the product is not safe, display the conflicting diets and ingredients
+    else if (!barcodeResults.product_safety){
+      modalText = barcodeResults.product_name + "\nThis product is not safe!" + "\nConflicting diets: " + barcodeResults.diets_cntrdctd + "\nConflicting ingredients: " + barcodeResults.bad_ingrdts_fnd;
+      setText(modalText);
+      setIsWarningModalVisible(true);
+    }
+    // If the product is safe, display a success message
+    else {
+      modalText = barcodeResults.product_name + "\nThis product is safe!"
+      setText(modalText);
+      setIsSafeModalVisible(true);
+    }
+
+    // Check if the product has been scanned before
     const currentUserId = getCurrentUserId();
     const userFirestoreProductDocuments = await readDocmentsMatchingField("products", "userId", currentUserId);
-    console.log("User history: " + JSON.stringify(userFirestoreProductDocuments));
+    //console.log("User history: " + JSON.stringify(userFirestoreProductDocuments));
     for (let i = 0; i < userFirestoreProductDocuments.length; i++){
       if (userFirestoreProductDocuments[i].barcode === data){
         console.log("Product already scanned");
@@ -93,23 +102,23 @@ const CameraPage = () => {
       }
     }
     console.log("Product not scanned before");
+
     // Add the product to the user's history - To Do: Ingredients need to be preprocessed
     const scannedProductInfo = await getProductData(data, {ingrd_wanted: true, images_wanted: true, nutri_val_wanted: true, allergens_wanted: true}); 
-    console.log("Scanned product info: " + JSON.stringify(scannedProductInfo));
+    //console.log("Scanned product info: " + JSON.stringify(scannedProductInfo));
     const firestoreProductData = { 
       userId : currentUserId,
       barcode : data,
       productName : barcodeResults.product_name,
       productSafety : barcodeResults.product_safety,
-      productIngredients : scannedProductInfo.ingredient_data ? scannedProductInfo.ingredient_data : [],
-      productNutrition : scannedProductInfo.nutriscore_grade ? scannedProductInfo.nutriscore_grade : "",
-      productAllergens : scannedProductInfo.allergens ? scannedProductInfo.allergens : [],
-      productImage: scannedProductInfo.image_data ? scannedProductInfo.image_data : ""
-      ,
+      productIngredients : scannedProductInfo.ingredient_data ,
+      productNutrition : scannedProductInfo.nutriscore_grade,
+      productAllergens : scannedProductInfo.allergens,
+      productImage: scannedProductInfo.image_data,
       flaggedIngredients : barcodeResults.bad_ingrdts_fnd,
       flaggedDiets : barcodeResults.diets_cntrdctd
     }
-    console.log("Firestore product data: " + JSON.stringify(firestoreProductData));
+    //console.log("Firestore product data: " + JSON.stringify(firestoreProductData));
     createDocumentWithAutoId("products", firestoreProductData);
 
   };

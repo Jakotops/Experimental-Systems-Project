@@ -42,16 +42,16 @@ export const readDocument = async (collection, docId) => {
   // @Params field (String): the field to match
   // @Params value: the value to match the field to
   // @Returns (Array): an array of documents that match the field
-  
+
   export const readDocmentsMatchingField = async (chosenCollection, field, value) => {
-    console.log("Reading documents from collection: ", chosenCollection, "where field: ", field, "is equal to: ", value);
-    console.log("field: ", field, "value: ", value);
+    //console.log("Reading documents from collection: ", chosenCollection, "where field: ", field, "is equal to: ", value);
+    //console.log("field: ", field, "value: ", value);
     const q = query(collection(FirebaseDb, chosenCollection), where(field, '==', value));
     try{
       const querySnapshot = await getDocs(q);
       let results = [];
       querySnapshot.forEach((doc) => {
-        console.log(doc.id, " => ", doc.data());
+        //console.log(doc.id, " => ", doc.data());
         results.push(doc.data());
       });
       return results;
@@ -117,7 +117,7 @@ export const readDocument = async (collection, docId) => {
   export const getCurrentUserId = () => {
     const user = FirebaseAuth.currentUser;
     if (user) {
-      console.log("Current user id: " + user.uid);
+      //console.log("Current user id: " + user.uid);
       return user.uid;
     } else {
       console.log("No user is currently logged in.");

@@ -63,16 +63,16 @@ export async function getProductData(barcode, request_data){
     toReturn.fetchSuccess = true;
     toReturn.productName = data_retrieved.product.product_name;
     if (request_data.ingrd_wanted){
-      toReturn.ingredient_data = data_retrieved.product.ingredients;
+      toReturn.ingredient_data = data_retrieved.product.ingredients ? data_retrieved.product.ingredients : [];
     }
     if (request_data.allergens_wanted){
-      toReturn.allergens = data_retrieved.product.allergens;
+      toReturn.allergens = data_retrieved.product.allergens ? data_retrieved.product.allergens : [];
     }
     if (request_data.nutri_val_wanted){
-      toReturn.nutriscore_grade = data_retrieved.product.nutriscore_grade;
+      toReturn.nutriscore_grade = data_retrieved.product.nutriscore_grade ? data_retrieved.product.nutriscore_grade : "";
     }
     if (request_data.images_wanted){
-      toReturn.image_data = data_retrieved.product.image_url;
+      toReturn.image_data = data_retrieved.product.image_url ? data_retrieved.product.image_url : "";
     }
   }
   catch(error) {
@@ -116,16 +116,16 @@ export async function getProductData(barcode, request_data){
  *  toReturn.product_name     - string        product name
  */
 export async function evaluateProductGivenDietData(barcode, diet_data){
-  console.log(`Running evaluateProductGivenDietData`);
-  console.log(`Input Barcode: ${barcode}`);
-  console.log(`Diet data: ${JSON.stringify(diet_data)}`);
+  //console.log(`Running evaluateProductGivenDietData`);
+  //console.log(`Input Barcode: ${barcode}`);
+  //console.log(`Diet data: ${JSON.stringify(diet_data)}`);
 
   // Initialise toReturn
-  let toReturn = {success: false, product_safety: true, bad_ingrdts_fnd: [], diets_cntrdctd: [], image_URL: "", product_name: ""}
+  let toReturn = {success: false, product_safety: true, bad_ingrdts_fnd: [], diets_cntrdctd: [], image_URL: "", product_name: "", no_ingrdts_fnd: false};
   const product_data = await getProductData(barcode, {ingrd_wanted: true, images_wanted: true});
   // Check fetch success
   if (product_data.fetchSuccess){
-    console.log(`Data retrieved: ${JSON.stringify(product_data)}`);
+    //console.log(`Data retrieved: ${JSON.stringify(product_data)}`);
 
     
     // Extract data
@@ -134,16 +134,20 @@ export async function evaluateProductGivenDietData(barcode, diet_data){
 
     // Check each ingredient
     let ingredient_list = [];
+    if (product_data.ingredient_data.length == 0){
+      toReturn.product_safety = false;
+      toReturn.no_ingrdts_fnd = true;
+    }
     for (let curr_ing_num = 0; curr_ing_num < product_data.ingredient_data.length; curr_ing_num++){
       let current_ingredient = product_data.ingredient_data[curr_ing_num].id.toLowerCase();
 
-      console.log(`Checking ingredient: ${JSON.stringify(current_ingredient)}`);
+      //console.log(`Checking ingredient: ${JSON.stringify(current_ingredient)}`);
 
       // Compare with each of unbreached diets
       for (let curr_diet_num = 0; curr_diet_num < unbreached_diets.length; curr_diet_num++){
         let current_diet_object = unbreached_diets[curr_diet_num];
 
-        console.log(`Checking diet: ${JSON.stringify(current_diet_object)}`);
+        //console.log(`Checking diet: ${JSON.stringify(current_diet_object)}`);
 
         let current_banned_ings = current_diet_object.banned_ingredients
         // If the ingredient is in the list of banned ingredients for this diet
@@ -187,7 +191,7 @@ export async function evaluateProductGivenDietData(barcode, diet_data){
   }
 
 
-  console.log(`Data to return: ${JSON.stringify(toReturn)}`);
+  //console.log(`Data to return: ${JSON.stringify(toReturn)}`);
   // Return data
   return toReturn;
 }

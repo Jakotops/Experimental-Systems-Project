@@ -7,7 +7,7 @@ import { readDocumentField } from "../Firebase/FirestoreFunctions";
 //@return (Tuple): A promise containing the array of user's selected diets and the array of user's selected ingredients	
 export const idToObject = async (UserId) => {	
     // Create empty arrays to store the user's selected diets and ingredients	
-    console.log("User id: " + UserId);
+    //console.log("User id: " + UserId);
     let UserDiets = [];
     let UserIngredients = [];
 
@@ -32,8 +32,8 @@ export const idToObject = async (UserId) => {
         const singleIngredient = ingredientsObject[UserIngredientIds[y]]	
         UserIngredients.push(singleIngredient["name"]);	
     }	
-    console.log("User diets: " + UserDiets);	
-    console.log("User ingredients: " + UserIngredients);	
+    //console.log("User diets: " + UserDiets);	
+    //console.log("User ingredients: " + UserIngredients);	
 
     return [UserDiets, UserIngredients];	
 }
