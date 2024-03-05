@@ -6,7 +6,7 @@ import React, { useEffect } from 'react'
 import { FirebaseAuth } from '../Firebase/Firebase'
 import { readDocumentField } from '../Firebase/FirestoreFunctions'
 import { onAuthStateChanged } from "firebase/auth";
-import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
+import { createBottomTabNavigator} from '@react-navigation/bottom-tabs';
 
 import PreferencePage from './../screens/PreferencePage';
 import ProfilePage from './../screens/ProfilePage';
@@ -55,7 +55,7 @@ function AuthenticatedTabs(){
     initialRouteName={newUser ? "Preference" : "Camera"}
     screenOptions={{
       headerShown:false,
-      unmountOnBlur:true
+      unmountOnBlur:true,
     }}
     >
       <Tab.Screen name="Profile" component={ProfilePage} />
