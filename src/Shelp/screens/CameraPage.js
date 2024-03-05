@@ -50,7 +50,7 @@ const CameraPage = () => {
         }
         setDietData(resultsObject);
       } catch (error) {
-        console.log("Error in getting user diets and ingredients: " + error);
+        //console.log("Error in getting user diets and ingredients: " + error);
       }
     } 
     retriveUserPreferences();
