@@ -31,6 +31,7 @@ const PreferencePage = () => {
               listItems2={ingredientItems} 
               listFeatures1={dietFeatures} 
               listFeatures2={ingredientFeatures} 
+              containerHeight={575}
             />
           )}
       </Stack.Screen>

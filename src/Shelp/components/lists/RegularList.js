@@ -6,7 +6,7 @@ import DietCard from '../cards/DietCard';
 import { useNavigation } from '@react-navigation/core';
 import { updateDocumentField, getCurrentUserId } from '../../Firebase/FirestoreFunctions';
 
-const RegularList = ({name, items,  features}) => {
+const RegularList = ({name, items,  features, listHeight}) => {
   const navigation = useNavigation();
   const [checkedItems, setCheckedItems] = useState({}); // State to store checked items
   const [isDietCardVisible, setIsDietCardVisible] = useState(false); // State to manage DietCard visibility
@@ -76,7 +76,7 @@ const RegularList = ({name, items,  features}) => {
     navigation.navigate('DietCard', { dietName }); // Navigate to dietcard screen
   };
   return ( // List is rendered using 'TouchableOpacity'
-    <ScrollView style={{height:575}}>
+    <ScrollView style={{height:listHeight}}>
       <View style={{paddingBottom:10}}>
         {items.map((items, index) => (
           <TouchableOpacity key={index} style={styles.itemContainer} onPress={() => {if(features[0]){toggleCheckbox(index)}}}>
