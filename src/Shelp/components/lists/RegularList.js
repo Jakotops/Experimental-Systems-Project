@@ -73,7 +73,7 @@ const RegularList = ({name, items,  features}) => {
   };
 
   const arrowPress = (dietName) => {
-    navigation.navigate('DietCard', { dietName }); // Navigate to dietcard screen
+    navigation.navigate('Diet Card', { dietName }); // Navigate to dietcard screen
   };
   return ( // List is rendered using 'TouchableOpacity'
     <ScrollView style={{height:575}}>
@@ -94,6 +94,10 @@ const RegularList = ({name, items,  features}) => {
 export default RegularList
 
 const styles = StyleSheet.create({
+  scrollContainer: {
+    flexGrow: 1,
+    paddingBottom: 250, 
+  },
   checkbox: {
     width: 28,
     height: 28,
