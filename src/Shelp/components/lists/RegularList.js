@@ -72,8 +72,14 @@ const RegularList = ({name, items,  features, listHeight}) => {
     }
   };
 
-  const arrowPress = (dietName) => {
-    navigation.navigate('Diet Card', { dietName }); // Navigate to dietcard screen
+  const arrowPress = (cardName) => {
+    if (name === 'Diets') {
+      navigation.navigate('Diet Card', {dietName: cardName});
+    }
+    else if (name === 'Safe' || name === 'Unsafe') {
+      navigation.navigate('ProductCardTest');
+    }
+
   };
   return ( // List is rendered using 'TouchableOpacity'
     <ScrollView style={{height:listHeight}}>

@@ -36,7 +36,7 @@ const PreferencePage = () => {
           )}
       </Stack.Screen>
       <Stack.Screen name="Diet Card" component={DietCard} />
-      <Stack.Screen name="ProductCardTest" component={ProductCard} />
+  
     </Stack.Navigator>
   </SafeAreaView>
   )

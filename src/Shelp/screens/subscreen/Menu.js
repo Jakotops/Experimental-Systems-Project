@@ -47,7 +47,7 @@ const Menu = ({navigation}) => {
       <Text>Menu</Text>
       <Button title="History" onPress={() => navigation.navigate('History')} />
       <Button title="Settings" onPress={() => navigation.navigate('Settings')} />
-      <Button title="Logout" onPress={handleLogout} />
+      <Button title="Logout" onPress={handleLogout}/>
     </SafeAreaView>
   )
 }
