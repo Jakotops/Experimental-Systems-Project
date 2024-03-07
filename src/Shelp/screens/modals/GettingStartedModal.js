@@ -6,6 +6,12 @@ import { createNativeStackNavigator } from "@react-navigation/native-stack";
 
 import { Body, Button } from "react-native-ios-kit";
 
+import RegularList from "../../components/lists/RegularList";
+import DietCard from "../../components/cards/DietCard";
+
+import { diets } from "../../Diets.json";
+import { ingredients } from "../../Ingredients.json"
+
 function GettingStartedModal() {
   const Stack = createNativeStackNavigator();
 
@@ -17,12 +23,20 @@ function GettingStartedModal() {
       }}
       initialRouteName="GettingStarted">
       <Stack.Screen name="GettingStarted" component={GettingStartedPage} />
-      <Stack.Screen name="Page2" component={Page2} />
-      <Stack.Screen name="Page3" component={Page3} />
-      <Stack.Screen name="Page4" component={Page4} />
-      <Stack.Screen name="SkippablePage" component={SkippablePage} />
-      <Stack.Screen name="Page5" component={Page5} />
+      <Stack.Screen name="DietPage" component={DietPage} />
+      <Stack.Screen name="IngredientsPage" component={IngredientsPage} />
       <Stack.Screen name="Finished" component={Finished} />
+
+      <Stack.Screen
+        name="Diet Card"
+        component={DietCard}
+        options={{
+          headerTitle: "Diet Information",
+          headerBackTitle: "Back",
+          headerTransparent: false,
+          headerShadowVisible: false
+        }}
+      />
     </Stack.Navigator>
   );
 }
@@ -34,72 +48,41 @@ function GettingStartedPage({ navigation }) {
       <Fill>
         <TextBody>We need to set up a few things before you can use the app for the first time.</TextBody>
       </Fill>
-      <PrimaryButton onPress={() => navigateAndClear(navigation, "Page2")}>Get Started</PrimaryButton>
+      <PrimaryButton onPress={() => navigateAndClear(navigation, "DietPage")}>Get Started</PrimaryButton>
     </OnboardingPage>
   );
 }
 
-function Page2({ navigation }) {
+function DietPage({ navigation }) {
+  const dietItems = Object.values(diets).map(diet => ({ name: diet.name }));
+
   return (
-    <OnboardingPage backTitle="Set This Up">
-      <Title>Set This Up</Title>
+    <OnboardingPage backTitle="Your Target Diet">
+      <Title>What is Your Target Diet?</Title>
       <Fill>
-        <TextBody>You need to set this up.</TextBody>
+        <TextBody>Please select all the diets below that you would like to follow.</TextBody>
+        <View style={{flex: 1, marginVertical: 20}}>
+          <RegularList name="Diets" items={dietItems} features={[true, true]}/>
+        </View>
       </Fill>
-      <PrimaryButton onPress={() => navigation.navigate("Page3")}>Next</PrimaryButton>
+      <PrimaryButton onPress={() => navigation.navigate("IngredientsPage")}>Next</PrimaryButton>
     </OnboardingPage>
   );
 }
 
-function Page3({ navigation }) {
-  return (
-    <OnboardingPage backTitle="Other Back Message">
-      <Title>Set That Up</Title>
-      <Fill>
-        <TextBody>You need to set that up.</TextBody>
-      </Fill>
-      <PrimaryButton onPress={() => navigation.navigate("Page4")}>Next</PrimaryButton>
-    </OnboardingPage>
-  );
-}
+function IngredientsPage({ navigation }) {
+  const ingredientItems = Object.values(ingredients).map(ingredient => ({ name: ingredient.name }));
 
-function Page4({ navigation }) {
   return (
-    <OnboardingPage backTitle="Never Gonna Give You Up">
-      <Title>Would You Like To Go To The Next Page?</Title>
+    <OnboardingPage backTitle="Ingredients to Avoid">
+      <Title>What Else Can You Not Eat?</Title>
       <Fill>
-        <TextBody>You need to make a decision here.</TextBody>
+        <TextBody>Please select all the ingredients below that you do not want to eat.</TextBody>
+        <View style={{flex: 1, marginVertical: 20}}>
+          <RegularList name="Ingredients" items={ingredientItems} features={[true, false]}/>
+        </View>
       </Fill>
-      <SecondaryButton onPress={() => navigation.navigate("Page5")}>Skip The Next Page</SecondaryButton>
-      <PrimaryButton onPress={() => navigation.navigate("SkippablePage")}>Go To The Next Page</PrimaryButton>
-    </OnboardingPage>
-  );
-}
-
-function SkippablePage({ navigation }) {
-  return (
-    <OnboardingPage backTitle="🥐 (This Is Not A Drill)">
-      <Title>Croissant?</Title>
-      <Fill>
-        <TextBody>Croissant!</TextBody>
-        <Fill style={{ justifyContent: "center" }}>
-          <TextBody style={{ fontSize: 144, lineHeight: 160 }}>🥐</TextBody>
-        </Fill>
-      </Fill>
-      <PrimaryButton onPress={() => navigation.navigate("Page5")}>Croissant</PrimaryButton>
-    </OnboardingPage>
-  );
-}
-
-function Page5({ navigation }) {
-  return (
-    <OnboardingPage>
-      <Title>Set Final Thing Up</Title>
-      <Fill>
-        <TextBody>You need to set a final thing up.</TextBody>
-        <TextBody>Never Gonna Let You Down.</TextBody>
-      </Fill>
-      <PrimaryButton onPress={() => navigateAndClear(navigation, "Finished")}>Next</PrimaryButton>
+      <PrimaryButton onPress={() => navigation.navigate("Finished")}>Next</PrimaryButton>
     </OnboardingPage>
   );
 }
@@ -110,7 +93,7 @@ function Finished({ navigation }) {
       <Title>All Done</Title>
       <Fill>
         <TextBody>You are now all set up.</TextBody>
-        <TextBody>You can modify your preferences on the preference page.</TextBody>
+        <TextBody>You can modify your preferences in the preference page at any time.</TextBody>
       </Fill>
       <PrimaryButton onPress={() => navigateAndClear(navigation, "Main")}>Finish</PrimaryButton>
     </OnboardingPage>
@@ -197,25 +180,28 @@ const styles = StyleSheet.create({
   view: {
     flex: 1,
     marginVertical: 60,
-    marginHorizontal: 30
   },
   title: {
     marginTop: 10,
     marginBottom: 20,
+    marginHorizontal: 30,
     fontSize: 40,
     fontWeight: "700",
     lineHeight: 48,
     textAlign: "center"
   },
   fill: {
-    flexGrow: 1
+    flexGrow: 1,
+    height: 1
   },
   body: {
     marginTop: 10,
+    marginHorizontal: 30,
     textAlign: "center"
   },
   primaryButton: {
     marginVertical: 5,
+    marginHorizontal: 30,
     padding: 15,
     borderRadius: 15
   },
@@ -225,7 +211,8 @@ const styles = StyleSheet.create({
   },
   secondaryButton: {
     flexGrow: 1,
-    marginVertical: 20
+    marginVertical: 20,
+    marginHorizontal: 30
   },
   secondaryButtonText: {
     fontSize: 18,
