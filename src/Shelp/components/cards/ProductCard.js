@@ -22,17 +22,22 @@ const ProductCard = () => {
     { name: '...' },
   ];
   return (
-    <SafeAreaView>
-      <Text style={styles.title}>Product Name</Text>
-      <Text style={styles.subtitle}>Product Image</Text>
-      <Text>Image</Text>
-      <Text style={styles.subtitle}>Nutrional Value</Text>
+    <SafeAreaView style={styles.container}>
+      <View style={styles.titleContainer}>
+        <Text style={styles.title}>Product Name</Text>
+      </View>
+      <Text style={[styles.text]}>Product Image</Text>
+      <View style={styles.subtitleContainter}>
+        <Text style={styles.subtitle}>Nutrional Value</Text>
+      </View>
       {nutr.map((item, index) => (
-        <Text>{item.name}</Text>
+        <Text style={[styles.text]}>{item.name}</Text>
       ))}
-      <Text style={styles.subtitle}>Ingredients</Text>
+      <View style={styles.subtitleContainter}>
+        <Text style={styles.subtitle}>Ingredients</Text>
+      </View>
       {ingr.map((item, index) => (
-        <Text>{item.name}</Text>
+        <Text style={[styles.text]}>{item.name}</Text>
       ))}
     </SafeAreaView>
   )
@@ -41,18 +46,42 @@ const ProductCard = () => {
 export default ProductCard
 
 const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    alignItems: 'center',
+    backgroundColor: '#FFFFFF', 
+    padding: 20,
+  },
+  titleContainer: {
+    backgroundColor: '#f19a33', 
+    padding: 10,
+    borderRadius: 10,
+    marginBottom: 10,
+    marginTop: 20, 
+    borderWidth: 1,
+  },
   title: {
-    fontSize: 24,
+    fontSize: 36,
     fontWeight: 'bold',
+    color: '#FFFFFF', 
+    textAlign: 'center', 
+  },
+  subtitleContainter: {
+    backgroundColor: 'lightgray', 
+    padding: 10,
+    borderRadius: 10,
     marginBottom: 16,
+    marginTop: 20, 
+    borderWidth: 1, 
   },
   subtitle: {
     fontSize: 18,
     fontWeight: 'bold',
-    marginBottom: 8,
   },
   itemContainer: {
-    fontSize: 16,
-    marginBottom: 4,
+    alignItems: 'center', 
   },
+  text: {
+    fontSize: 12,
+  }
 })

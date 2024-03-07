@@ -72,7 +72,10 @@ function Main() {
   return (
     <Tab.Navigator
       initialRouteName="Camera"
-      screenOptions={{headerShown:false}}
+      screenOptions={{
+        headerShown: false,
+        unmountOnBlur: true
+      }}
     >
       <Tab.Screen name="Profile" component={ProfilePage} />
       <Tab.Screen name="Camera" component={Camerapage} />
