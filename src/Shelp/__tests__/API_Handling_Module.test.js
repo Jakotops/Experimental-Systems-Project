@@ -1,6 +1,24 @@
-const b = require('../Helpers/API_Handling_Module');
+import { evaluateProductGivenDietData }  from "../Helpers/API_Handling_Module";
+
+import { getProductData }  from "../Helpers/API_Handling_Module";
+
 
 test('Checks the get function returns correctly', async () => {
+    /*  Checks the data is returned properly for nutella
+    */
+    let nutella_barcode = 3017624010701;
+
+    let data = await getProductData(nutella_barcode, {ingrd_wanted: true, allergens_wanted: true, nutri_val_wanted: true, images_wanted: true});
+    
+    console.log(`Data returned by get function: ${JSON.stringify(data)}`);
+
+    let expected_result = {fetchSuccess : true, allergens : "en:nuts"};
+    
+    return expect(data).toMatchObject(expected_result);
+});
+
+
+test('Checks the evaluate function returns correctly', async () => {
     /*  Test for nutella given a peanut allergy and gluten intolerance, 
         with the peanut allergies being repeated in the list of other unfriendly ingredients
     */
@@ -11,6 +29,11 @@ test('Checks the get function returns correctly', async () => {
 
     let userDietDataObject = {user_diets: userDiets, other_bd_igrdnts: other_banned_ings};
 
-    expect((await evaluateProductGivenDietData(nutella_barcode, userDietDataObject)).success.toBe(true));
+    evaluateProductGivenDietData(nutella_barcode, userDietDataObject).then((product_data) => {
+        console.log(`Data returned by evaluateProductGivenDietData: ${JSON.stringify(product_data)}`);
 
+        let expected_result = {success : true, product_safety : true};
+    
+        return expect(product_data).toMatchObject(expected_result);
+    });
 });

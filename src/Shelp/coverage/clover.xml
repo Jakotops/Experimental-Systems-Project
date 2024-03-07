@@ -1,6 +1,78 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<coverage generated="1709216162818" clover="3.2.0">
-  <project timestamp="1709216162818" name="All files">
-    <metrics statements="0" coveredstatements="0" conditionals="0" coveredconditionals="0" methods="0" coveredmethods="0" elements="0" coveredelements="0" complexity="0" loc="0" ncloc="0" packages="0" files="0" classes="0"/>
+<coverage generated="1709826799269" clover="3.2.0">
+  <project timestamp="1709826799269" name="All files">
+    <metrics statements="66" coveredstatements="39" conditionals="24" coveredconditionals="11" methods="3" coveredmethods="3" elements="93" coveredelements="53" complexity="0" loc="66" ncloc="66" packages="1" files="2" classes="2"/>
+    <file name="API_Handling_Module.js" path="C:\Users\james\OneDrive - University of Bath\Work\Uni\Comp Sci\Y2\ESP\D3\Programming\Uni Testing Repo\Experimental-Systems-Project\src\Shelp\Helpers\API_Handling_Module.js">
+      <metrics statements="54" coveredstatements="27" conditionals="24" coveredconditionals="11" methods="2" coveredmethods="2"/>
+      <line num="40" count="2" type="stmt"/>
+      <line num="41" count="2" type="cond" truecount="1" falsecount="1"/>
+      <line num="42" count="2" type="stmt"/>
+      <line num="44" count="2" type="cond" truecount="2" falsecount="0"/>
+      <line num="45" count="1" type="stmt"/>
+      <line num="47" count="2" type="cond" truecount="2" falsecount="0"/>
+      <line num="48" count="1" type="stmt"/>
+      <line num="50" count="2" type="cond" truecount="1" falsecount="1"/>
+      <line num="51" count="2" type="stmt"/>
+      <line num="54" count="2" type="stmt"/>
+      <line num="56" count="2" type="stmt"/>
+      <line num="57" count="2" type="stmt"/>
+      <line num="58" count="1" type="cond" truecount="1" falsecount="1"/>
+      <line num="59" count="0" type="stmt"/>
+      <line num="61" count="1" type="stmt"/>
+      <line num="63" count="1" type="stmt"/>
+      <line num="64" count="1" type="stmt"/>
+      <line num="65" count="1" type="cond" truecount="1" falsecount="1"/>
+      <line num="66" count="1" type="stmt"/>
+      <line num="68" count="1" type="cond" truecount="1" falsecount="1"/>
+      <line num="69" count="1" type="stmt"/>
+      <line num="71" count="1" type="cond" truecount="1" falsecount="1"/>
+      <line num="72" count="1" type="stmt"/>
+      <line num="74" count="1" type="cond" truecount="1" falsecount="1"/>
+      <line num="75" count="1" type="stmt"/>
+      <line num="79" count="0" type="stmt"/>
+      <line num="80" count="0" type="stmt"/>
+      <line num="81" count="0" type="stmt"/>
+      <line num="87" count="0" type="stmt"/>
+      <line num="88" count="0" type="stmt"/>
+      <line num="97" count="1" type="stmt"/>
+      <line num="127" count="1" type="stmt"/>
+      <line num="129" count="1" type="stmt"/>
+      <line num="132" count="0" type="cond" truecount="0" falsecount="2"/>
+      <line num="137" count="0" type="stmt"/>
+      <line num="138" count="0" type="stmt"/>
+      <line num="141" count="0" type="stmt"/>
+      <line num="142" count="0" type="stmt"/>
+      <line num="143" count="0" type="stmt"/>
+      <line num="148" count="0" type="stmt"/>
+      <line num="149" count="0" type="stmt"/>
+      <line num="153" count="0" type="stmt"/>
+      <line num="155" count="0" type="cond" truecount="0" falsecount="2"/>
+      <line num="156" count="0" type="stmt"/>
+      <line num="157" count="0" type="stmt"/>
+      <line num="158" count="0" type="stmt"/>
+      <line num="161" count="0" type="stmt"/>
+      <line num="164" count="0" type="cond" truecount="0" falsecount="2"/>
+      <line num="165" count="0" type="stmt"/>
+      <line num="166" count="0" type="stmt"/>
+      <line num="171" count="0" type="stmt"/>
+      <line num="172" count="0" type="stmt"/>
+      <line num="174" count="0" type="stmt"/>
+      <line num="180" count="0" type="stmt"/>
+    </file>
+    <file name="Id_To_Object_Mapper.js" path="C:\Users\james\OneDrive - University of Bath\Work\Uni\Comp Sci\Y2\ESP\D3\Programming\Uni Testing Repo\Experimental-Systems-Project\src\Shelp\Helpers\Id_To_Object_Mapper.js">
+      <metrics statements="12" coveredstatements="12" conditionals="0" coveredconditionals="0" methods="1" coveredmethods="1"/>
+      <line num="8" count="1" type="stmt"/>
+      <line num="10" count="9" type="stmt"/>
+      <line num="11" count="9" type="stmt"/>
+      <line num="14" count="9" type="stmt"/>
+      <line num="15" count="8" type="stmt"/>
+      <line num="20" count="8" type="stmt"/>
+      <line num="21" count="8" type="stmt"/>
+      <line num="26" count="8" type="stmt"/>
+      <line num="27" count="24" type="stmt"/>
+      <line num="29" count="8" type="stmt"/>
+      <line num="30" count="32" type="stmt"/>
+      <line num="35" count="8" type="stmt"/>
+    </file>
   </project>
 </coverage>
