@@ -12,9 +12,24 @@ const LoginPage = ({navigation}) => {
 
   const auth = FirebaseAuth;
 
+  const Onboarding = () => {
+    signInAsDev()
+      .then((userCredential) => {
+        // Signed in
+        const user = userCredential.user;
+        console.log('User has been logged in and is being onboarded');
+
+        navigation.reset({
+          index: 0,
+          routes: [{ name: "Authenticated", params: { forceOnboarding: true } }]
+        });
+      })
+      .catch((error) => alert(error.message));
+  };
+
   // Login as a developer
   const DevLogin = () => {
-    signInWithEmailAndPassword(auth, 'Dev@Dev.com', 'Dev1234!')
+    signInAsDev()
     .then((userCredential) => {
       // Signed in 
       const user = userCredential.user;
@@ -26,6 +41,8 @@ const LoginPage = ({navigation}) => {
     })
     .catch((error) => alert(error.message));
   }
+
+  const signInAsDev = () => signInWithEmailAndPassword(auth, 'Dev@Dev.com', 'Dev1234!');
 
   // Login in as a user
   const handleLogin = () => {
@@ -64,6 +81,7 @@ const LoginPage = ({navigation}) => {
       <Button 
         title='Dev Login' 
         onPress={DevLogin} />
+      <Button title="Dev Login With Onboarding" onPress={Onboarding} />
     </KeyboardAvoidingView>
   )
 }
