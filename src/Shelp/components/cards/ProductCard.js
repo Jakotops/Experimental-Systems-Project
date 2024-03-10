@@ -31,7 +31,7 @@ const ProductCard = () => {
         <Text style={styles.subtitle}>Nutrional Value</Text>
       </View>
       {nutr.map((item, index) => (
-        <Text style={[styles.text]}>{item.name}</Text>
+        <Text style={[styles.text]} key={index}>{item.name}</Text>
       ))}
       <View style={styles.subtitleContainter}>
         <Text style={styles.subtitle}>Ingredients</Text>

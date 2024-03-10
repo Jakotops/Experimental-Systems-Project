@@ -5,7 +5,7 @@ import React, { useState } from 'react'
 import RegularList from './RegularList'
 import { useNavigation } from '@react-navigation/core';
 
-const DoubleList = ({listName1, listName2, listItems1, listItems2, listFeatures1, listFeatures2}) => {
+const DoubleList = ({listName1, listName2, listItems1, listItems2, listFeatures1, listFeatures2, containerHeight}) => {
   const [showDiet, setShowDiet] = useState(false);
   const [showIngredients, setShowIngredients] = useState(false);
   const navigation = useNavigation();
@@ -51,14 +51,14 @@ const DoubleList = ({listName1, listName2, listItems1, listItems2, listFeatures1
       <View>
         {showDiet && (
           <View>
-            <RegularList name={listName1} items={listItems1} features={listFeatures1}/>
+            <RegularList name={listName1} items={listItems1} features={listFeatures1} listHeight={containerHeight}/>
           </View>
         )}
       </View>
       <View>
         {showIngredients && (
           <View >
-            <RegularList name={listName2} items={listItems2} features={listFeatures2}/>
+            <RegularList name={listName2} items={listItems2} features={listFeatures2} listHeight={containerHeight}/>
             {/* Render your ingredients list here */}
           </View>
         )}

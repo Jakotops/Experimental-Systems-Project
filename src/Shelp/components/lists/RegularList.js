@@ -6,7 +6,7 @@ import DietCard from '../cards/DietCard';
 import { useNavigation } from '@react-navigation/core';
 import { updateDocumentField, getCurrentUserId } from '../../Firebase/FirestoreFunctions';
 
-const RegularList = ({name, items,  features}) => {
+const RegularList = ({name, items,  features, listHeight}) => {
   const navigation = useNavigation();
   const [checkedItems, setCheckedItems] = useState({}); // State to store checked items
   const [isDietCardVisible, setIsDietCardVisible] = useState(false); // State to manage DietCard visibility
@@ -49,9 +49,13 @@ const RegularList = ({name, items,  features}) => {
         console.error('Error saving checked items:', error);
       }
     }
-    loadCheckedItems(); // Function called when the prop changes
+    if (features[0]) {
+     loadCheckedItems();
+    } // Function called when the prop changes
     return () => {
-      saveCheckedItems(); // Function called when the component unmounts ("derenders")
+      if (features[0]){
+      saveCheckedItems();
+      } // Function called when the component unmounts ("derenders")
     }
   }, [name]);
   // Function to toggle the checked state of an item
@@ -72,11 +76,17 @@ const RegularList = ({name, items,  features}) => {
     }
   };
 
-  const arrowPress = (dietName) => {
-    navigation.navigate('Diet Card', { dietName }); // Navigate to dietcard screen
+  const arrowPress = (cardName) => {
+    if (name === 'Diets') {
+      navigation.navigate('Diet Card', {dietName: cardName});
+    }
+    else if (name === 'Safe' || name === 'Unsafe') {
+      navigation.navigate('ProductCardTest');
+    }
+
   };
   return ( // List is rendered using 'TouchableOpacity'
-    <ScrollView style={{height:575}}>
+    <ScrollView style={{height:listHeight}}>
       <View style={{paddingBottom:10}}>
         {items.map((items, index) => (
           <TouchableOpacity key={index} style={styles.itemContainer} onPress={() => {if(features[0]){toggleCheckbox(index)}}}>

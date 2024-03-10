@@ -5,6 +5,7 @@ import React, { useEffect, useState
 import { updateDocumentField } from '../../Firebase/FirestoreFunctions'
 import { FirebaseAuth } from '../../Firebase/Firebase'
 import { signOut, onAuthStateChanged } from "firebase/auth";
+import { SafeAreaView } from 'react-native-safe-area-context';
 
 const Menu = ({navigation}) => {
 
@@ -42,15 +43,21 @@ const Menu = ({navigation}) => {
   }
 
   return (
-    <View>
+    <SafeAreaView> 
       <Text>Menu</Text>
       <Button title="History" onPress={() => navigation.navigate('History')} />
       <Button title="Settings" onPress={() => navigation.navigate('Settings')} />
-      <Button title="Logout" onPress={handleLogout} />
-    </View>
+      <Button title="Logout" onPress={handleLogout}/>
+    </SafeAreaView>
   )
 }
 
 export default Menu
 
-const styles = StyleSheet.create({})
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center'
+  }
+})

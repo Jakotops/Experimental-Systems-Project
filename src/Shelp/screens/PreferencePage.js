@@ -31,11 +31,12 @@ const PreferencePage = () => {
               listItems2={ingredientItems} 
               listFeatures1={dietFeatures} 
               listFeatures2={ingredientFeatures} 
+              containerHeight={575}
             />
           )}
       </Stack.Screen>
       <Stack.Screen name="Diet Card" component={DietCard} />
-      <Stack.Screen name="ProductCardTest" component={ProductCard} />
+  
     </Stack.Navigator>
   </SafeAreaView>
   )
