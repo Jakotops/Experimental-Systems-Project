@@ -49,9 +49,13 @@ const RegularList = ({name, items,  features, listHeight}) => {
         console.error('Error saving checked items:', error);
       }
     }
-    loadCheckedItems(); // Function called when the prop changes
+    if (features[0]) {
+     loadCheckedItems();
+    } // Function called when the prop changes
     return () => {
-      saveCheckedItems(); // Function called when the component unmounts ("derenders")
+      if (features[0]){
+      saveCheckedItems();
+      } // Function called when the component unmounts ("derenders")
     }
   }, [name]);
   // Function to toggle the checked state of an item
