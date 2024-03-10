@@ -35,7 +35,7 @@ printProductData(3017624010701, {ingrd_wanted: true, allergens_wanted: true, nut
 
 TO DO: Change parameters to barcode and an object containing some booleans telling us which data is wanted.
 */
-export async function getProductData(barcode, request_data){
+async function getProductData(barcode, request_data){
   // Construct URL
   let inputURL = `https://world.openfoodfacts.org/api/v2/product/${barcode}?fields=product_name`;
   if (request_data.ingrd_wanted == true){
@@ -56,7 +56,7 @@ export async function getProductData(barcode, request_data){
   try {
     const api_response = await fetch(inputURL, {method:"GET"});
     if(api_response.ok == false){
-      throw new Error(`Bad response`);
+      throw new Error(`Bad response in API data retrieval. api_response.ok == false`);
     }
     const data_retrieved = await api_response.json();
 
@@ -77,15 +77,16 @@ export async function getProductData(barcode, request_data){
   }
   catch(error) {
     toReturn.fetchSuccess = false;
-    console.log("Error has occured in the getProductData() function.");
-    console.log(`Parameters: 
-    barcode: ${barcode}
-    Ingredients wanted: ${request_data.ingrd_wanted}
-    Allergens wanted: ${request_data.allergens_wanted}
-    Nutritional value wanted: ${request_data.nutri_val_wanted}
-    Images wanted: ${request_data.images_wanted}`);
-    console.log(`URL used: ${inputURL}`);
-    console.log(error);
+    let error_message = `Error has occured in the getProductData() function.
+Parameters: 
+  barcode: ${barcode}
+  Ingredients wanted: ${request_data.ingrd_wanted}
+  Allergens wanted: ${request_data.allergens_wanted}
+  Nutritional value wanted: ${request_data.nutri_val_wanted}
+  Images wanted: ${request_data.images_wanted}
+URL used: ${inputURL}
+${error}`;
+    console.log(error_message);
   }
 
   /*
@@ -115,7 +116,7 @@ export async function getProductData(barcode, request_data){
  *  toReturn.image_URL        - string        contains the URL to an image of the product
  *  toReturn.product_name     - string        product name
  */
-export async function evaluateProductGivenDietData(barcode, diet_data){
+async function evaluateProductGivenDietData(barcode, diet_data){
   /*
   console.log(`Running evaluateProductGivenDietData`);
   console.log(`Input Barcode: ${barcode}`);
@@ -154,7 +155,7 @@ export async function evaluateProductGivenDietData(barcode, diet_data){
         // If the ingredient is in the list of banned ingredients for this diet
         if (current_banned_ings.includes(current_ingredient)){
           toReturn.product_safety = false;
-          diets_cntrdctd.push(current_diet.name);
+          toReturn.diets_cntrdctd.push(current_diet_object.name);
           new_unbreached_diets.splice(curr_diet_num, 1);
         }
       }
@@ -179,3 +180,5 @@ export async function evaluateProductGivenDietData(barcode, diet_data){
   // Return data
   return toReturn;
 }
+
+export {getProductData, evaluateProductGivenDietData};
