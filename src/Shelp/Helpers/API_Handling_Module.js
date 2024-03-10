@@ -63,16 +63,16 @@ export async function getProductData(barcode, request_data){
     toReturn.fetchSuccess = true;
     toReturn.productName = data_retrieved.product.product_name;
     if (request_data.ingrd_wanted){
-      toReturn.ingredient_data = data_retrieved.product.ingredients;
+      toReturn.ingredient_data = data_retrieved.product.ingredients ? data_retrieved.product.ingredients : [];
     }
     if (request_data.allergens_wanted){
-      toReturn.allergens = data_retrieved.product.allergens;
+      toReturn.allergens = data_retrieved.product.allergens ? data_retrieved.product.allergens : [];
     }
     if (request_data.nutri_val_wanted){
-      toReturn.nutriscore_grade = data_retrieved.product.nutriscore_grade;
+      toReturn.nutriscore_grade = data_retrieved.product.nutriscore_grade ? data_retrieved.product.nutriscore_grade : "";
     }
     if (request_data.images_wanted){
-      toReturn.image_data = data_retrieved.product.image_url;
+      toReturn.image_data = data_retrieved.product.image_url ? data_retrieved.product.image_url : "";
     }
   }
   catch(error) {
@@ -115,67 +115,85 @@ export async function getProductData(barcode, request_data){
  *  toReturn.image_URL        - string        contains the URL to an image of the product
  *  toReturn.product_name     - string        product name
  */
-export function evaluateProductGivenDietData(barcode, diet_data){
-  console.log(`Running evaluateProductGivenDietData`);
-  console.log(`Input Barcode: ${barcode}`);
-  console.log(`Diet data: ${JSON.stringify(diet_data)}`);
+export async function evaluateProductGivenDietData(barcode, diet_data){
+  //console.log(`Running evaluateProductGivenDietData`);
+  //console.log(`Input Barcode: ${barcode}`);
+  //console.log(`Diet data: ${JSON.stringify(diet_data)}`);
 
   // Initialise toReturn
-  let toReturn = {success: false, product_safety: true, bad_ingrdts_fnd: [], diets_cntrdctd: [], image_URL: "", product_name: ""}
+  let toReturn = {success: false, product_safety: true, bad_ingrdts_fnd: [], diets_cntrdctd: [], image_URL: "", product_name: "", no_ingrdts_fnd: false};
+  const product_data = await getProductData(barcode, {ingrd_wanted: true, images_wanted: true});
+  // Check fetch success
+  if (product_data.fetchSuccess){
+    //console.log(`Data retrieved: ${JSON.stringify(product_data)}`);
 
-  getProductData(barcode, {ingrd_wanted: true, allergens_wanted: false, nutri_val_wanted: false, images_wanted: true})
-    .then((product_data) => {
-      // Check fetch success
-      if (product_data.fetchSuccess){
-        console.log(`Data retrieved: ${JSON.stringify(product_data)}`);
+    
+    // Extract data
+    let unbreached_diets = diet_data.user_diets.slice(0);
+    let new_unbreached_diets = unbreached_diets.slice(0);
 
-        
-        // Extract data
-        let unbreached_diets = diet_data.user_diets.slice(0);
-        let new_unbreached_diets = unbreached_diets.slice(0);
+    // Check each ingredient
+    let ingredient_list = [];
+    if (product_data.ingredient_data.length == 0){
+      toReturn.product_safety = false;
+      toReturn.no_ingrdts_fnd = true;
+    }
+    for (let curr_ing_num = 0; curr_ing_num < product_data.ingredient_data.length; curr_ing_num++){
+      let current_ingredient = product_data.ingredient_data[curr_ing_num].id.toLowerCase();
 
-        // Check each ingredient
-        let ingredient_list = [];
-        for (let curr_ing_num = 0; curr_ing_num < product_data.ingredient_data.length; curr_ing_num++){
-          let current_ingredient = product_data.ingredient_data[curr_ing_num].text;
+      //console.log(`Checking ingredient: ${JSON.stringify(current_ingredient)}`);
 
-          console.log(`Checking ingredient: ${JSON.stringify(current_ingredient)}`);
+      // Compare with each of unbreached diets
+      for (let curr_diet_num = 0; curr_diet_num < unbreached_diets.length; curr_diet_num++){
+        let current_diet_object = unbreached_diets[curr_diet_num];
 
-          // Compare with each of unbreached diets
-          for (let curr_diet_num = 0; curr_diet_num < unbreached_diets.length; curr_diet_num++){
-            let current_diet_object = unbreached_diets[curr_diet_num];
+        //console.log(`Checking diet: ${JSON.stringify(current_diet_object)}`);
 
-            console.log(`Checking diet: ${JSON.stringify(current_diet_object)}`);
+        let current_banned_ings = current_diet_object.banned_ingredients
+        // If the ingredient is in the list of banned ingredients for this diet
 
-            let current_banned_ings = current_diet_object.banned_ingredients
-            // If the ingredient is in the list of banned ingredients for this diet
-            if (current_banned_ings.includes(current_ingredient)){
-              toReturn.product_safety = false;
-              diets_cntrdctd.push(current_diet.name);
-              new_unbreached_diets.splice(curr_diet_num, 1);
-            }
-          }
-          unbreached_diets = new_unbreached_diets.slice(0);
+        // Iterate through the banned ingredients in the current diet
+        for (let selected_banned_ing_num = 0; selected_banned_ing_num < current_banned_ings.length; selected_banned_ing_num++){
+          let selected_banned_ingredient = current_banned_ings[selected_banned_ing_num];
 
-          // Compare with the list of other banned ingredients
-          if (diet_data.other_bd_igrdnts.includes(current_ingredient)){
+          // Checks if product ingredient contains the banned ingredient or if the banned ingredient contains the product ingredient as a substring
+          if (current_ingredient.includes(selected_banned_ingredient) || selected_banned_ingredient.includes(current_ingredient)){
             toReturn.product_safety = false;
-            toReturn.bad_ingrdts_fnd.push(current_ingredient);
+            if (!toReturn.bad_ingrdts_fnd.includes(current_ingredient)){
+              toReturn.bad_ingrdts_fnd.push(selected_banned_ingredient);
+            }
+            toReturn.diets_cntrdctd.push(current_diet_object.name);
+            new_unbreached_diets.splice(curr_diet_num, 1);
           }
         }
-
-        // Get the product name and image URL to help the user check they got the right product.
-        toReturn.product_name = product_data.productName;
-        toReturn.image_URL = product_data.image_data;
-
-        toReturn.success = true;
       }
+      unbreached_diets = new_unbreached_diets.slice(0);
+
+      // Compare with the list of other banned ingredients
+      for (let other_selected_banned_ing_num = 0; other_selected_banned_ing_num < diet_data.other_bd_igrdnts.length; other_selected_banned_ing_num++){
+        let other_selected_banned_ingredient = diet_data.other_bd_igrdnts[other_selected_banned_ing_num];
+        
+        // Checks if product ingredient contains the banned ingredient or if the banned ingredient contains the product ingredient as a substring
+        if (current_ingredient.includes(other_selected_banned_ingredient) || other_selected_banned_ingredient.includes(current_ingredient)){
+          toReturn.product_safety = false;
+          if (!toReturn.bad_ingrdts_fnd.includes(current_ingredient)){
+            toReturn.bad_ingrdts_fnd.push(other_selected_banned_ingredient);
+          }
+        }
+      }
+    }
+
+    // Get the product name and image URL to help the user check they got the right product.
+    toReturn.product_name = product_data.productName;
+    toReturn.image_URL = product_data.image_data;
+
+    toReturn.success = true;
+  }
 
 
-      console.log(`Data to return: ${JSON.stringify(toReturn)}`);
-      // Return data
-      return toReturn;
-  });
+  //console.log(`Data to return: ${JSON.stringify(toReturn)}`);
+  // Return data
+  return toReturn;
 }
 
 
@@ -194,8 +212,7 @@ function testEvaluateProductGivenDietData(){
   console.log(`Data returned: ${JSON.stringify(returned_data)}`);
 }
 
-
-testEvaluateProductGivenDietData();
+//testEvaluateProductGivenDietData();
 
 // No idea if I'm doing the exporting right
 //export default getProductData;
