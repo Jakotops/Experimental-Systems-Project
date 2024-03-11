@@ -2,8 +2,10 @@
 import { StyleSheet, Text, View, Button, TouchableOpacity } from 'react-native'
 import React, { useEffect, useState
  } from 'react'
-import { FirebaseAuth, updateDocumentField, readDocumentField } from '../../Firebase'
+import { updateDocumentField, readDocumentField } from '../../Firebase/FirestoreFunctions'
+import { FirebaseAuth } from '../../Firebase/Firebase'
 import { signOut, onAuthStateChanged } from "firebase/auth";
+import { SafeAreaView } from 'react-native-safe-area-context';
 
 const Menu = ({navigation}) => {
 
@@ -50,7 +52,10 @@ const Menu = ({navigation}) => {
       // Sets new user status to false (better implentation is to read status from the database to reduce writes
       updateDocumentField('users', id, 'newUser', false);
 
-      navigation.navigate('NonAuthenticated')
+      navigation.reset({
+        index: 0,
+        routes: [{ name: "NonAuthenticated" }]
+      });
     }).catch((error) => {
       console.log(error.message)
     });
@@ -75,49 +80,21 @@ const Menu = ({navigation}) => {
     </View>
     </View>
   );
+    <SafeAreaView> 
+      <Text>Menu</Text>
+      <Button title="History" onPress={() => navigation.navigate('History')} />
+      <Button title="Settings" onPress={() => navigation.navigate('Settings')} />
+      <Button title="Logout" onPress={handleLogout}/>
+    </SafeAreaView>
+  )
 }
 
 export default Menu
 
 const styles = StyleSheet.create({
-
-  headerContainer: {
-    flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
-    paddingTop: 50, // Adjust as needed for spacing from the top
-  },
-
-  buttonContainer: {
-    flex: 2,
-    justifyContent: 'center',
-    alignItems: 'center',
-  },
-
   container: {
     flex: 1,
     justifyContent: 'center',
-    alignItems: 'center',
-  },
-
-  button: {
-    backgroundColor: 'orange',
-    paddingHorizontal: 20,
-    paddingVertical: 10,
-    borderRadius: 20,
-    marginVertical: 10,
-  },
-
-  buttonText: {
-    color: 'white',
-    fontSize: 18,
-    fontWeight: 'bold',
-  },
-
-  greetingText:{
-    color: 'orange',
-    fontSize: 32, // Increase font size
-    fontWeight: 'bold',
-    //textTransform: 'uppercase', // Example text transformation
-  },
-});
+    alignItems: 'center'
+  }
+})

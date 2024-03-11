@@ -3,8 +3,9 @@
 
 import { KeyboardAvoidingView, TextInput, StyleSheet, Text, View, Button, TouchableOpacity, TouchableWithoutFeedback, Keyboard, Image } from 'react-native'
 import React, {useState} from 'react'
-import { FirebaseAuth, createDocument} from '../Firebase'
-import { createUserWithEmailAndPassword, updateProfile } from "firebase/auth";
+import { FirebaseAuth } from '../Firebase/Firebase'
+import { createDocument } from '../Firebase/FirestoreFunctions'
+import { createUserWithEmailAndPassword } from "firebase/auth";
 import Logo from "../assets/logo.png"
 
 const RegisterPage = ({ navigation }) => {
@@ -52,7 +53,9 @@ const RegisterPage = ({ navigation }) => {
         const newUserObject = {
           username: username,
           email: email,
-          newUser: true
+          newUser: true,
+          diets: [],
+          ingredients: []
         }
         createDocument('users', createdId, newUserObject);
         navigation.navigate('LoginPage');

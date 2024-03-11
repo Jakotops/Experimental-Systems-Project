@@ -1,10 +1,10 @@
 {
   "diets": {
-    "1": {"peanut_allergy": ["peanut", "peanut butter", "peanut oil"]},
-    "2": {"gluten_free": ["wheat", "cereal", "barley", "rye"]},
-    "3": {"halal": ["pork", "gelatin"]},
-    "4": {"vegan": ["pork", "gelatin", "chicken", "beef", "pork", "meat", "meat extract", "eggs", "cheese"]},
-    "5": {"vegetarian": ["pork", "gelatin", "chicken", "beef", "pork", "meat", "meat extract", "cheese"]},
-    "6": {"dairy_free": ["cheese"]}
+    "1": {"name": "Peanut allergy", "banned ingredients": ["peanut", "peanut butter", "peanut oil"]},
+    "2": {"name": "Gluten free",    "banned_ingredients": ["wheat", "cereal", "barley", "rye"]},
+    "3": {"name": "Halal",          "banned_ingredients": ["pork", "gelatin"]},
+    "4": {"name": "Vegan",          "banned_ingredients": ["pork", "gelatin", "chicken", "beef", "pork", "meat", "meat extract", "eggs", "cheese"]},
+    "5": {"name": "Vegetarian",     "banned_ingredients": ["pork", "gelatin", "chicken", "beef", "pork", "meat", "meat extract", "cheese"]},
+    "6": {"name": "Dairy free",     "banned_ingredients": ["cheese"]}
   }
 }

@@ -3,16 +3,21 @@
 import { View, Text } from 'react-native'
 import React, { useEffect } from 'react'
 
-import { FirebaseAuth,  readDocumentField } from '../Firebase'
+import { FirebaseAuth } from '../Firebase/Firebase'
+import { readDocumentField } from '../Firebase/FirestoreFunctions'
 import { onAuthStateChanged } from "firebase/auth";
+import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 
+import GettingStartedModal from "../screens/modals/GettingStartedModal";
 import PreferencePage from './../screens/PreferencePage';
 import ProfilePage from './../screens/ProfilePage';
 import Camerapage from './../screens/CameraPage';
 
 
-function AuthenticatedTabs(){
+function Authenticated({ route }) {
+  const forceOnboarding = route.params?.forceOnboarding ?? false;
+
   const [newUser, setNewUser] = React.useState(false);
   const [loading, setLoading] = React.useState(true);
 
@@ -41,30 +46,42 @@ function AuthenticatedTabs(){
     });
   }
 
-  const Tab = createBottomTabNavigator();
+  const Stack = createNativeStackNavigator();
 
   if (loading) {  
     return (
       <View><Text>Loading...</Text></View>
     );
   }
+
+  // Screen is initialized to the "Getting Started" modal if the user is new, otherwise the camera page
+
   return (
-    // Tab navigator screen is intialized to the preference page if the user is new, otherwise the camera page
+    <Stack.Navigator
+      screenOptions={{ headerShown: false }}
+      initialRouteName={newUser || forceOnboarding ? "GettingStartedModal" : "Main"}>
+      <Stack.Screen name="Main" component={Main} />
+      <Stack.Screen name="GettingStartedModal" component={GettingStartedModal} />
+    </Stack.Navigator>
+  );
+}
+
+function Main() {
+  const Tab = createBottomTabNavigator();
+
+  return (
     <Tab.Navigator
-    initialRouteName={newUser ? "Preference" : "Camera"}
-    screenOptions={{headerShown:false}}
+      initialRouteName="Camera"
+      screenOptions={{
+        headerShown: false,
+        unmountOnBlur: true
+      }}
     >
       <Tab.Screen name="Profile" component={ProfilePage} />
       <Tab.Screen name="Camera" component={Camerapage} />
       <Tab.Screen name="Preference" component={PreferencePage} />
     </Tab.Navigator>
   );
-}
-
-const Authenticated = () => {
-    return (
-      <AuthenticatedTabs />
-    );
 }
 
 export default Authenticated

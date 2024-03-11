@@ -1,7 +1,7 @@
 // TO DO: Create a login page for the app using the following tutorial: https://youtu.be/ql4J6SpLXZA and firebase authentication
 import { TextInput, StyleSheet, Text, View, Button, KeyboardAvoidingView, TouchableOpacity, TouchableWithoutFeedback, Keyboard, Image  } from 'react-native'
 import React, { useState } from 'react'
-import { FirebaseAuth } from '../Firebase'
+import { FirebaseAuth } from '../Firebase/Firebase'
 import { signInWithEmailAndPassword } from "firebase/auth";
 import Logo from '../assets/logo.png';
 
@@ -13,17 +13,37 @@ const LoginPage = ({navigation}) => {
 
   const auth = FirebaseAuth;
 
+  const Onboarding = () => {
+    signInAsDev()
+      .then((userCredential) => {
+        // Signed in
+        const user = userCredential.user;
+        console.log('User has been logged in and is being onboarded');
+
+        navigation.reset({
+          index: 0,
+          routes: [{ name: "Authenticated", params: { forceOnboarding: true } }]
+        });
+      })
+      .catch((error) => alert(error.message));
+  };
+
   // Login as a developer
   const DevLogin = () => {
-    signInWithEmailAndPassword(auth, 'Dev@Dev.com', 'Dev1234!')
+    signInAsDev()
     .then((userCredential) => {
       // Signed in 
       const user = userCredential.user;
       console.log('User has been logged in');
-      navigation.navigate('Authenticated')
+      navigation.reset({
+        index: 0,
+        routes: [{ name: "Authenticated" }]
+      });
     })
     .catch((error) => alert(error.message));
   }
+
+  const signInAsDev = () => signInWithEmailAndPassword(auth, 'Dev@Dev.com', 'Dev1234!');
 
   // Login in as a user
   const handleLogin = () => {
@@ -31,7 +51,10 @@ const LoginPage = ({navigation}) => {
       .then((userCredential) => {
         // Signed in 
         const user = userCredential.user;
-        navigation.navigate('Authenticated')
+        navigation.reset({
+          index: 0,
+          routes: [{ name: "Authenticated" }]
+        });
       })
       .catch((error) => alert(error.message));
     
