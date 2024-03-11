@@ -80,21 +80,49 @@ const Menu = ({navigation}) => {
     </View>
     </View>
   );
-    <SafeAreaView> 
-      <Text>Menu</Text>
-      <Button title="History" onPress={() => navigation.navigate('History')} />
-      <Button title="Settings" onPress={() => navigation.navigate('Settings')} />
-      <Button title="Logout" onPress={handleLogout}/>
-    </SafeAreaView>
-  )
 }
 
 export default Menu
 
 const styles = StyleSheet.create({
+
+  headerContainer: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+    paddingTop: 50, // Adjust as needed for spacing from the top
+  },
+
+  buttonContainer: {
+    flex: 2,
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+
   container: {
     flex: 1,
     justifyContent: 'center',
-    alignItems: 'center'
-  }
-})
+    alignItems: 'center',
+  },
+
+  button: {
+    backgroundColor: 'orange',
+    paddingHorizontal: 20,
+    paddingVertical: 10,
+    borderRadius: 20,
+    marginVertical: 10,
+  },
+
+  buttonText: {
+    color: 'white',
+    fontSize: 18,
+    fontWeight: 'bold',
+  },
+
+  greetingText:{
+    color: 'orange',
+    fontSize: 32, // Increase font size
+    fontWeight: 'bold',
+    //textTransform: 'uppercase', // Example text transformation
+  },
+});
