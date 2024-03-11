@@ -7,6 +7,7 @@ import { createNativeStackNavigator } from '@react-navigation/native-stack'
 import History from './subscreen/History'
 import Settings from './subscreen/Settings'
 import Menu from './subscreen/Menu'
+import ProductCard from '../components/cards/ProductCard'
 
 const ProfilePage = () => {
   const Stack = createNativeStackNavigator(); 
@@ -15,6 +16,7 @@ const ProfilePage = () => {
     <Stack.Screen options={{headerShown: false}} name="Menu" component={Menu} />
     <Stack.Screen name="History" component={History} />
     <Stack.Screen name="Settings" component={Settings} />
+    <Stack.Screen name="ProductCardTest" component={ProductCard} />
   </Stack.Navigator>
   )
 }

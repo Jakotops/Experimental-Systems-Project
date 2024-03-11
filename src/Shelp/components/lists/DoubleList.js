@@ -1,11 +1,11 @@
 // TO DO: Display two custom list compenents side by side in a navigation stack
 
-import { StyleSheet, Text, View, Button, TouchableOpacity } from 'react-native'
+import { StyleSheet, Text, View, Button, TouchableOpacity} from 'react-native'
 import React, { useState } from 'react'
 import RegularList from './RegularList'
 import { useNavigation } from '@react-navigation/core';
 
-const DoubleList = () => {
+const DoubleList = ({listName1, listName2, listItems1, listItems2, listFeatures1, listFeatures2, containerHeight}) => {
   const [showDiet, setShowDiet] = useState(false);
   const [showIngredients, setShowIngredients] = useState(false);
   const navigation = useNavigation();
@@ -38,25 +38,27 @@ const DoubleList = () => {
           style={[styles.button, isDietClicked && styles.clickedButton]}
           onPress={toggleDietList}
         >
-          <Text style={[styles.buttonText, isDietClicked && styles.clickedButtonText]}>Diet</Text>
+          <Text style={[styles.buttonText, isDietClicked && styles.clickedButtonText]}>{listName1}</Text>
         </TouchableOpacity>
         <TouchableOpacity
           style={[styles.button, isIngredientsClicked && styles.clickedButton]}
           onPress={toggleIngredientsList}
         >
-          <Text style={[styles.buttonText, isIngredientsClicked && styles.clickedButtonText]}>Ingredients</Text>
+          <Text style={[styles.buttonText, isIngredientsClicked && styles.clickedButtonText]}>{listName2}</Text>
       </TouchableOpacity>
       </View>
       <View><Button title="Product Card [Test]" onPress={toggleProductCard} /></View>
       <View>
         {showDiet && (
           <View>
-            <RegularList type = 'diet'/>
+            <RegularList name={listName1} items={listItems1} features={listFeatures1} listHeight={containerHeight}/>
           </View>
         )}
+      </View>
+      <View>
         {showIngredients && (
-          <View>
-            <RegularList type = 'ingredients' />
+          <View >
+            <RegularList name={listName2} items={listItems2} features={listFeatures2} listHeight={containerHeight}/>
             {/* Render your ingredients list here */}
           </View>
         )}
