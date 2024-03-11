@@ -45,13 +45,13 @@ test('The UserDiets array should contain the diets objects that the user has sel
   const [UserDiets, UserIngredients] = await idToObject(userId);
   expect(UserDiets).toEqual([
   {
-      "name": "peanut_allergy", "banned ingredients": ["peanut", "peanut butter", "peanut oil"]   
+      "name": "Peanut allergy", "banned ingredients": ["peanut", "peanut butter", "peanut oil"]   
   },
   {
-      "name": "vegan",          "banned_ingredients": ["pork", "gelatin", "chicken", "beef", "pork", "meat", "meat extract", "eggs", "cheese"]
+      "name": "Vegan",          "banned_ingredients": ["pork", "gelatin", "chicken", "beef", "pork", "meat", "meat extract", "eggs", "cheese"]
   },
   {
-      "name": "dairy_free",     "banned_ingredients": ["cheese"]
+      "name": "Dairy free",     "banned_ingredients": ["cheese"]
   }
     ]);
 });
@@ -68,13 +68,13 @@ test ('Both the UserDiets and UserIngredients array contain the correct values',
   const [UserDiets, UserIngredients] = await idToObject(userId);
   expect(UserDiets).toEqual([
     {
-      "name": "peanut_allergy", "banned ingredients": ["peanut", "peanut butter", "peanut oil"]   
+      "name": "Peanut allergy", "banned ingredients": ["peanut", "peanut butter", "peanut oil"]   
     },
     {
-      "name": "vegan",          "banned_ingredients": ["pork", "gelatin", "chicken", "beef", "pork", "meat", "meat extract", "eggs", "cheese"]
+      "name": "Vegan",          "banned_ingredients": ["pork", "gelatin", "chicken", "beef", "pork", "meat", "meat extract", "eggs", "cheese"]
     },
     {
-      "name": "dairy_free",     "banned_ingredients": ["cheese"]
+      "name": "Dairy free",     "banned_ingredients": ["cheese"]
     }
   ]);
   expect(UserIngredients).toEqual(["peanut", "peanut butter", "meat extract", "eggs"]);

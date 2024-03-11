@@ -35,7 +35,7 @@ printProductData(3017624010701, {ingrd_wanted: true, allergens_wanted: true, nut
 
 TO DO: Change parameters to barcode and an object containing some booleans telling us which data is wanted.
 */
-async function getProductData(barcode, request_data){
+export async function getProductData(barcode, request_data){
   // Construct URL
   let inputURL = `https://world.openfoodfacts.org/api/v2/product/${barcode}?fields=product_name`;
   if (request_data.ingrd_wanted == true){
@@ -116,13 +116,10 @@ ${error}`;
  *  toReturn.image_URL        - string        contains the URL to an image of the product
  *  toReturn.product_name     - string        product name
  */
-async function evaluateProductGivenDietData(barcode, diet_data){
-  /*
-  console.log(`Running evaluateProductGivenDietData`);
-  console.log(`Input Barcode: ${barcode}`);
-  console.log(`Diet data: ${JSON.stringify(diet_data)}`);
-  */
-
+export async function evaluateProductGivenDietData(barcode, diet_data){
+  //console.log(`Running evaluateProductGivenDietData`);
+  //console.log(`Input Barcode: ${barcode}`);
+  //console.log(`Diet data: ${JSON.stringify(diet_data)}`);
 
   // Initialise toReturn
   let toReturn = {success: false, product_safety: true, bad_ingrdts_fnd: [], diets_cntrdctd: [], image_URL: "", product_name: "", no_ingrdts_fnd: false};
