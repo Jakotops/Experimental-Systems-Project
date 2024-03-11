@@ -55,6 +55,7 @@ export async function getProductData(barcode, request_data){
   // Attempt to retrieve data
   try {
     const api_response = await fetch(inputURL, {method:"GET"});
+    
     if(api_response.ok == false){
       throw new Error(`Bad response in API data retrieval. api_response.ok == false`);
     }
@@ -196,23 +197,6 @@ export async function evaluateProductGivenDietData(barcode, diet_data){
   // Return data
   return toReturn;
 }
-
-
-function testEvaluateProductGivenDietData(){
-  console.log(`Testing evaluateProductGivenDietData`);
-
-  let nutella_barcode = 3017624010701;
-  let userDiets = [ {name: "peanut_allergy", banned_ingredients: ["peanut", "peanut butter", "peanut oil"]}, 
-                    {name: "gluten_free", banned_ingredients: ["wheat", "cereal", "barley", "rye"]}];
-  let other_banned_ings = ["peanut", "peanut butter", "peanut oil"];
-
-  let userDietDataObject = {user_diets: userDiets, other_bd_igrdnts: other_banned_ings};
-  
-  let returned_data = evaluateProductGivenDietData(nutella_barcode, userDietDataObject);
-
-  console.log(`Data returned: ${JSON.stringify(returned_data)}`);
-}
-
 //testEvaluateProductGivenDietData();
 
 // No idea if I'm doing the exporting right

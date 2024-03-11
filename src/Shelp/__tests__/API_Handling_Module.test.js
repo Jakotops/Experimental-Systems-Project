@@ -6,9 +6,9 @@ test('Checks the get function returns correctly where all properties are request
 
     let data = await getProductData(nutella_barcode, {ingrd_wanted: true, allergens_wanted: true, nutri_val_wanted: true, images_wanted: true});
     
-    // console.log(`Data returned by get function: ${JSON.stringify(data)}`);
+    console.log(`Data returned by get function: ${JSON.stringify(data)}`);
 
-    let expected_result = {fetchSuccess : true, productName : "Nutella", allergens : "en:nuts"};
+    let expected_result = {fetchSuccess : true, productName : "Nutella", allergens : "en:nuts",  nutriscore_grade: "e", image_data: "https://images.openfoodfacts.org/images/products/301/762/401/0701/front_en.54.400.jpg" };
     
     return expect(data).toMatchObject(expected_result);
 });
@@ -38,6 +38,7 @@ test('Checks the get function returns correctly when given an overlength barcode
     
     return expect(data).toMatchObject(expected_result);
 });
+
 
 
 test('Checks the evaluate function returns correctly given an input of product nutella, with a peanut allergy and gluten intolerance, with peanut allergies listed in the other_banned_ings field', async () => {
@@ -86,6 +87,21 @@ test('Checks the evaluate function returns correctly given a bad barcode input',
 
     let product_data = await evaluateProductGivenDietData(product_barcode, userDietDataObject);
     let expected_result = {success : false};
+    
+    return expect(product_data).toMatchObject(expected_result);
+});
+
+test('Checks that the evaluate function returns an object with false saftety and true no ingridient data when given a barcode with no ingridient data', async () => {
+
+    let product_barcode = 196633965912; // This barcode has no ingridient data (Spring Water)
+    let userDiets = [ {name: "peanut_allergy", banned_ingredients: ["peanut", "peanuts", "peanut butter", "peanut oil"]}, 
+                    {name: "gluten_free", banned_ingredients: ["wheat", "cereal", "barley", "rye"]}];
+    let other_banned_ings = ["peanut", "peanuts", "peanut butter", "peanut oil"];
+
+    let userDietDataObject = {user_diets: userDiets, other_bd_igrdnts: other_banned_ings};
+
+    let product_data = await evaluateProductGivenDietData(product_barcode, userDietDataObject);
+    let expected_result = {success : true, product_safety : false, no_ingrdts_fnd : true};
     
     return expect(product_data).toMatchObject(expected_result);
 });
