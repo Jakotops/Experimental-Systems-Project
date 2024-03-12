@@ -18,10 +18,10 @@ const History = () => {
         let unsafeItemsList = [];
         historyItems.forEach(item => {
         if (item.productSafety) {
-          safeItemsList.push({ name: item.productName });
+          safeItemsList.push({ name: item.productName, barcode: item.barcode });
         } else {
           console.log("Unsafe item: " + JSON.stringify(item));
-          unsafeItemsList.push({ name: item.productName });
+          unsafeItemsList.push({ name: item.productName, barcode: item.barcode});
         }
         setSafeItems(safeItemsList);
         setUnsafeItems(unsafeItemsList);
@@ -43,7 +43,7 @@ const History = () => {
         listItems2={unsafeItems} 
         listFeatures1={safeFeatures} 
         listFeatures2={unsafeFeatures} 
-        containerHeight={525}
+        containerHeight={550}
       />
   )};
 

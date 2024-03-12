@@ -5,6 +5,7 @@ import React from 'react'
 const DietCard = ({route}) => {
   const { dietName } = route.params;
   let items = [];
+  console.log(dietName);
   // Populate the items array with ingredients
   items = [
     { id: 1, name: 'Ingredient 1' },

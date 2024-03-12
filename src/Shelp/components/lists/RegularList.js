@@ -78,10 +78,10 @@ const RegularList = ({name, items,  features, listHeight}) => {
 
   const arrowPress = (cardName) => {
     if (name === 'Diets') {
-      navigation.navigate('Diet Card', {dietName: cardName});
+      navigation.navigate('Diet Card', {dietName: cardName.name});
     }
     else if (name === 'Safe' || name === 'Unsafe') {
-      navigation.navigate('ProductCardTest');
+      navigation.navigate('ProductCardTest', {productBarcode: cardName.barcode});
     }
 
   };
@@ -89,10 +89,10 @@ const RegularList = ({name, items,  features, listHeight}) => {
     <ScrollView style={{height:listHeight}}>
       <View style={{paddingBottom:10}}>
         {items.map((items, index) => (
-          <TouchableOpacity key={index} style={styles.itemContainer} onPress={() => {if(features[0]){toggleCheckbox(index)}}}>
+          <TouchableOpacity key={items.barcode} style={styles.itemContainer} onPress={() => {if(features[0]){toggleCheckbox(index)}}}>
             {features[0] && <View style={[styles.checkbox, checkedItems[index] && styles.checked]}/>} 
             <Text style={[styles.text]}>{items.name}</Text>
-            {features[1] && <TouchableOpacity style={styles.arrowButton} onPress={() => arrowPress(items.name)}><Text style={styles.arrowIcon}>→</Text></TouchableOpacity>}
+            {features[1] && <TouchableOpacity style={styles.arrowButton} onPress={() => arrowPress(items)}><Text style={styles.arrowIcon}>→</Text></TouchableOpacity>}
           </TouchableOpacity>
         ))}
         {/*{isDietCardVisible && <DietCard/>}*/}
@@ -142,5 +142,6 @@ const styles = StyleSheet.create({
   },
   text: {
     fontSize: 35,
+    width: '65%',
   },
 });

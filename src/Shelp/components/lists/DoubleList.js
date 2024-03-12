@@ -47,7 +47,6 @@ const DoubleList = ({listName1, listName2, listItems1, listItems2, listFeatures1
           <Text style={[styles.buttonText, isIngredientsClicked && styles.clickedButtonText]}>{listName2}</Text>
       </TouchableOpacity>
       </View>
-      <View><Button title="Product Card [Test]" onPress={toggleProductCard} /></View>
       <View>
         {showDiet && (
           <View>
