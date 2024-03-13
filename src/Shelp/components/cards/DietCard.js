@@ -1,22 +1,24 @@
 // TO DO: Create a card for diet information displaying a list of multiple ingredients using a list component
 import { StyleSheet, Text, View, SafeAreaView } from 'react-native'
+import dietJson from '../../Diets.json';
+
 import React from 'react'
 
 const DietCard = ({route}) => {
-  const { dietName } = route.params;
+  const { dietName, banned_ingredients } = route.params;
+
+
+
   let items = [];
   console.log(dietName);
-  // Populate the items array with ingredients
-  items = [
-    { id: 1, name: 'Ingredient 1' },
-    { id: 2, name: 'Ingredient 2' },
-    { id: 3, name: '...' },
-    // Add more ingredient items here as needed
-  ];
+  console.log(banned_ingredients);
+  for (let i = 0; i < banned_ingredients.length; i++) {
+    items.push({ name: banned_ingredients[i].replace(/\b\w/g, l => l.toUpperCase()), id: i });
+  }
   return (
     <SafeAreaView style={styles.container}>
       <View style={styles.titleContainer}>
-        <Text style={styles.title}>{dietName}</Text>
+        <Text style={styles.title}>{dietName.replace(/\b\w/g, l => l.toUpperCase())}</Text>
       </View>
       <View style={styles.subtitleContainter}>
         <Text style={styles.subtitle}>Blacklisted ingredients:</Text>
@@ -40,7 +42,7 @@ const styles = StyleSheet.create({
     padding: 20,
   },
   titleContainer: {
-    backgroundColor: '#4bcba3', 
+    backgroundColor: 'orange', 
     padding: 10,
     borderRadius: 10,
     marginBottom: 10,
@@ -48,7 +50,7 @@ const styles = StyleSheet.create({
     borderWidth: 1,
   },
   title: {
-    fontSize: 68,
+    fontSize: 60,
     fontWeight: 'bold',
     color: '#FFFFFF', 
     textAlign: 'center', 
@@ -69,6 +71,6 @@ const styles = StyleSheet.create({
     alignItems: 'center', 
   },
   text: {
-    fontSize: 20,
+    fontSize: 30,
   }
 })

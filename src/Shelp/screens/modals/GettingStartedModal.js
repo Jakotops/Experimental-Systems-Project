@@ -203,7 +203,9 @@ const styles = StyleSheet.create({
     marginVertical: 5,
     marginHorizontal: 30,
     padding: 15,
-    borderRadius: 15
+    borderRadius: 15, 
+    backgroundColor: "#F69D34",
+    borderColor: "#F69D34"
   },
   primaryButtonText: {
     fontSize: 17,

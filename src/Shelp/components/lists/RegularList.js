@@ -4,7 +4,7 @@ import AsyncStorage from '@react-native-async-storage/async-storage'; // Used fo
 import React, { useState, useEffect } from 'react'
 import DietCard from '../cards/DietCard';
 import { useNavigation } from '@react-navigation/core';
-import { updateDocumentField, getCurrentUserId } from '../../Firebase/FirestoreFunctions';
+import { updateDocumentField, getCurrentUserId, readDocumentField } from '../../Firebase/FirestoreFunctions';
 
 const RegularList = ({name, items,  features, listHeight}) => {
   const navigation = useNavigation();
@@ -26,6 +26,18 @@ const RegularList = ({name, items,  features, listHeight}) => {
           // If there are stored checked items, it parses the JSON string into an object and sets the 
           // 'checkedItems' state using 'setCheckedItems'
           setCheckedItems(JSON.parse(storedCheckedItems));
+          //
+          //console.log('Loaded checked items:', storedCheckedItems);
+        }
+        else{
+          const firebaseList = await readDocumentField('users', userId, name.toLowerCase());
+          //console.log('Loaded checked items:', firebaseList);
+          let checkedItems = {};
+          for ( num in firebaseList) {
+            checkedItems[firebaseList[num]] = true;
+          }
+          AsyncStorage.setItem(`${name}_checked_items`, JSON.stringify(checkedItems));
+          setCheckedItems(checkedItems);
         }
       } catch (error) {
         console.error('Error loading checked items:', error);
@@ -44,7 +56,7 @@ const RegularList = ({name, items,  features, listHeight}) => {
           }
         }
         // Save the checked items to Firestore using the 'updateDocumentField' function
-        updateDocumentField('users', userId, name, checkedIds);
+        updateDocumentField('users', userId, name.toLowerCase(), checkedIds);
       } catch (error) {
         console.error('Error saving checked items:', error);
       }
@@ -78,20 +90,20 @@ const RegularList = ({name, items,  features, listHeight}) => {
 
   const arrowPress = (cardName) => {
     if (name === 'Diets') {
-      navigation.navigate('Diet Card', {dietName: cardName.name});
+      navigation.navigate('Diet Card', {dietName: cardName.name, banned_ingredients: cardName.banned_ingredients});
     }
     else if (name === 'Safe' || name === 'Unsafe') {
       navigation.navigate('ProductCardTest', {productBarcode: cardName.barcode});
     }
-
+    
   };
   return ( // List is rendered using 'TouchableOpacity'
     <ScrollView style={{height:listHeight}}>
       <View style={{paddingBottom:10}}>
         {items.map((items, index) => (
-          <TouchableOpacity key={items.barcode} style={styles.itemContainer} onPress={() => {if(features[0]){toggleCheckbox(index)}}}>
+          <TouchableOpacity key={index} style={styles.itemContainer} onPress={() => {if(features[0]){toggleCheckbox(index)}}}>
             {features[0] && <View style={[styles.checkbox, checkedItems[index] && styles.checked]}/>} 
-            <Text style={[styles.text]}>{items.name}</Text>
+            <Text style={[styles.text]} key={index}>{items.name.replace(/\b\w/g, l => l.toUpperCase())}</Text>
             {features[1] && <TouchableOpacity style={styles.arrowButton} onPress={() => arrowPress(items)}><Text style={styles.arrowIcon}>→</Text></TouchableOpacity>}
           </TouchableOpacity>
         ))}
@@ -138,7 +150,7 @@ const styles = StyleSheet.create({
     borderRadius: 15,
   },
   checked: {
-    backgroundColor: '#4bcba3', // Change the background color when checked
+    backgroundColor: '#F69D34', // Change the background color when checked
   },
   text: {
     fontSize: 35,

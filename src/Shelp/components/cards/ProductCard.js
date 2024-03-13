@@ -9,11 +9,12 @@ const ProductCard = ({route}) => {
   const userId = getCurrentUserId();
   const [productData, setProductData] = useState({});
   const [ingredients, setIngredients] = useState([]);
+  const [loading, setLoading] = useState(true);
   useEffect(() => {
     const retriveProductData = async () => {
       try {
         const productsRetrived = await readDocmentsMatchingField('products', 'userId', userId);
-        console.log("Products: " + productsRetrived);
+        // console.log("Products: " + productsRetrived);
         let productData = {};
         for (let i = 0; i < productsRetrived.length; i++) {
           if (productsRetrived[i].barcode === productBarcode) {
@@ -22,7 +23,7 @@ const ProductCard = ({route}) => {
             setProductData(productData);
           }
         }
-        console.log(productData); 
+        // console.log(productData); 
         let ingredientObjectList = productData.productIngredients;
         console.log(ingredientObjectList);
         let ingredientArray = [];
@@ -36,39 +37,26 @@ const ProductCard = ({route}) => {
             //capitalize the first letter of each word
             ingredient = ingredient.replace(/\b\w/g, l => l.toUpperCase());
             ingredientArray.push({ name: ingredient });
-
           }
         }
-        console.log(ingredientArray);
+        //console.log(ingredientArray);
         setIngredients(ingredientArray);
       } catch (error) {
         console.error('Error loading product data:', error);
 
-    }};
+    }
+    setLoading(false);
+  };
     retriveProductData();
-
+    return () => {setLoading(true)};
   }, []); 
-  console.log(productData);
-  let nutr = [];
-  let ingr = [];
-
-  nutr = [
-    { name: 'Energy: g' },
-    { name: 'Fat: g' },
-    { name: 'Carbs: g' },
-    { name: 'Salt: g' },
-    {name: 'Sugars: g' },
-    { name: 'Saturate: g' },
-  ];
-
-  ingr = [
-    { name: 'Ingredient 1' },
-    { name: 'Ingredient 2' },
-    { name: '...' },
-  ];
-
-
-
+  if (loading) {
+    return (
+        <View >
+          <Text></Text>
+        </View>
+    )
+  }
   return (
 
     <SafeAreaView style={styles.container}>

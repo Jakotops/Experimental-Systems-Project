@@ -82,7 +82,7 @@ const styles = StyleSheet.create({
     borderColor: 'black',
     //padding: 10,
     paddingVertical: 15,
-    paddingHorizontal: 20,
+    paddingHorizontal: 10,
     borderRadius: 15,
   },
   buttonText: {
@@ -91,7 +91,7 @@ const styles = StyleSheet.create({
     fontSize: 25, 
   },
   clickedButton: {
-    backgroundColor: '#4bcba3',
+    backgroundColor: '#F69D34',
   },
   clickedButtonText: {
     color: 'white',

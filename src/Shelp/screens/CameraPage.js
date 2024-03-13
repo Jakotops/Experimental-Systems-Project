@@ -1,7 +1,7 @@
 // TO DO: Set up the scanner overlay and the alerts for the scanner as well as the logic from the results to the database
 import React, { useState, useEffect } from 'react';
 import { StyleSheet, Text, TouchableOpacity, View, Button } from 'react-native';
-import { BarCodeScanner } from 'expo-barcode-scanner';
+import { CameraView, Camera } from "expo-camera/next";
 import WarningAlert from '../components/modals/WarningAlert';
 import SafeAlert from '../components/modals/SafeAlert';
 import { idToObject } from "../Helpers/Id_To_Object_Mapper";
@@ -29,7 +29,7 @@ const CameraPage = () => {
 
   const askForCameraPermission = () => {
     (async () => {
-      const { status } = await BarCodeScanner.requestPermissionsAsync();
+      const { status } = await Camera.requestCameraPermissionsAsync();
       setHasPermission(status === 'granted');
     })()
   }
@@ -126,8 +126,8 @@ const CameraPage = () => {
   const renderCamera = () => {
     return (
       <View style={styles.cameraContainer}>
-        <BarCodeScanner
-          onBarCodeScanned={scanned ? undefined : handleBarCodeScanned}
+        <CameraView
+          onBarcodeScanned={scanned ? undefined : handleBarCodeScanned}
           style={styles.camera}
         />
       </View>
@@ -138,7 +138,7 @@ const CameraPage = () => {
   if (hasPermission === null) {
     return(
     <View style={styles.container}>
-      <Text>Requesting for camera permission</Text>
+      <Text></Text>
     </View>) 
   }
 

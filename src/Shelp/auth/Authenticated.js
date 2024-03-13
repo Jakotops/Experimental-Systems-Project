@@ -1,6 +1,6 @@
 // Displays the nested stack for the user when they logged in to the app. The stack will contain the profile, camera, and preference pages.
 
-import { View, Text } from 'react-native'
+import { View, Text, Image } from 'react-native'
 import React, { useEffect } from 'react'
 
 import { FirebaseAuth } from '../Firebase/Firebase'
@@ -13,6 +13,13 @@ import GettingStartedModal from "../screens/modals/GettingStartedModal";
 import PreferencePage from './../screens/PreferencePage';
 import ProfilePage from './../screens/ProfilePage';
 import Camerapage from './../screens/CameraPage';
+
+import cameraIcon from '../assets/camera-icon.png';
+import profileIcon from '../assets/profile-icon.png';
+import preferenceIcon from '../assets/preference-icon.png';
+import preferenceIconFocused from '../assets/preference-icon-focused.png';
+import profileIconFocused from '../assets/profile-icon-focused.png';
+import cameraIconFocused from '../assets/camera-icon-focused.png';
 
 
 function Authenticated({ route }) {
@@ -77,11 +84,40 @@ function Main() {
         unmountOnBlur: true
       }}
     >
-      <Tab.Screen name="Profile" component={ProfilePage} />
-      <Tab.Screen name="Camera" component={Camerapage} />
-      <Tab.Screen name="Preference" component={PreferencePage} />
+      <Tab.Screen 
+        name="Profile" 
+        component={ProfilePage} 
+        options={
+          { tabBarIcon: ({ focused, color, size }) => (
+            <Image source={focused ? profileIconFocused : profileIcon} style={{ width: size, height: size }} />
+          ),
+          tabBarActiveTintColor: '#FFA500'}
+      }/>
+      <Tab.Screen 
+        name="Camera" 
+        component={Camerapage}
+        options={
+          { tabBarIcon: ({ focused, color, size }) => {
+            return (
+              <Image source={focused ? cameraIconFocused : cameraIcon} style={{ width: size, height: size }} />
+            );
+          },
+          tabBarActiveTintColor: '#FFA500'}
+      }/>
+      <Tab.Screen 
+        name="Preference" 
+        component={PreferencePage}
+        options={
+          { tabBarIcon: ({ focused, color, size }) => (
+            <Image source={focused ? preferenceIconFocused : preferenceIcon} style={{ width: size, height: size }} />
+          ),
+          tabBarActiveTintColor: '#FFA500'}
+        }
+         />
     </Tab.Navigator>
   );
 }
 
 export default Authenticated
+
+
