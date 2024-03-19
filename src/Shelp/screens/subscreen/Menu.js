@@ -6,12 +6,14 @@ import { updateDocumentField, readDocumentField } from '../../Firebase/Firestore
 import { FirebaseAuth } from '../../Firebase/Firebase'
 import { signOut, onAuthStateChanged } from "firebase/auth";
 import { SafeAreaView } from 'react-native-safe-area-context';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 const Menu = ({navigation}) => {
 
   const [id, setId] = useState('');
   const auth = FirebaseAuth;
-  const [currentUsername, setCurrentUsername] = useState(''); // [1
+  const [currentUsername, setCurrentUsername] = useState('');
+  const [loading, setLoading] = useState(true);
   // Checks if the user is logged in on the menu screen
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth, (user) => {
@@ -39,9 +41,13 @@ const Menu = ({navigation}) => {
       readDocumentField('users', currentUserId, 'username').then((result) => {
       username = result;
       setCurrentUsername(username);
+      setLoading(false);
       });
     }
-    return unsubscribe;},[]);
+    return ()=> {
+      unsubscribe();
+      setLoading(true);
+    };},[]);
     
 
   // Logs the user out
@@ -51,7 +57,8 @@ const Menu = ({navigation}) => {
 
       // Sets new user status to false (better implentation is to read status from the database to reduce writes
       updateDocumentField('users', id, 'newUser', false);
-
+      AsyncStorage.removeItem('Diets_checked_items');
+      AsyncStorage.removeItem('Ingredients_checked_items');
       navigation.reset({
         index: 0,
         routes: [{ name: "NonAuthenticated" }]
@@ -59,6 +66,14 @@ const Menu = ({navigation}) => {
     }).catch((error) => {
       console.log(error.message)
     });
+  }
+
+  if (loading) {
+    return (
+      <View>
+        <Text></Text>
+      </View>
+    )
   }
 
   return (

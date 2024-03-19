@@ -12,7 +12,7 @@ import Ingredients from '../Ingredients.json'
 const PreferencePage = () => {
 
   const Stack = createNativeStackNavigator(); 
-  const dietItems = Object.values(Diets.diets).map(diet => ({ name: diet.name }));
+  const dietItems = Object.values(Diets.diets).map(diet => ({ name: diet.name, banned_ingredients: diet.banned_ingredients}));
   const ingredientItems = Object.values(Ingredients.ingredients).map(ingredient => ({ name: ingredient.name }));
   const dietFeatures = [true, true];
   const ingredientFeatures = [true, false];
@@ -24,6 +24,7 @@ const PreferencePage = () => {
           options={{ headerShown: false }}
         >
           {() => (
+            <View style={styles.container}>
             <DoubleList 
               listName1="Diets" 
               listName2="Ingredients" 
@@ -31,12 +32,12 @@ const PreferencePage = () => {
               listItems2={ingredientItems} 
               listFeatures1={dietFeatures} 
               listFeatures2={ingredientFeatures} 
-              containerHeight={575}
+              containerHeight={625}
             />
+            </View>
           )}
       </Stack.Screen>
       <Stack.Screen name="Diet Card" component={DietCard} />
-  
     </Stack.Navigator>
   </SafeAreaView>
   )
@@ -44,4 +45,8 @@ const PreferencePage = () => {
 
 export default PreferencePage
 
-const styles = StyleSheet.create({})
+const styles = StyleSheet.create({
+  container: { 
+    paddingTop: 20,
+  },
+})

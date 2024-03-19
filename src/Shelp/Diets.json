@@ -1,6 +1,6 @@
 {
   "diets": {
-    "1": {"name": "Peanut allergy", "banned ingredients": ["peanut", "peanut butter", "peanut oil"]},
+    "1": {"name": "Peanut allergy", "banned_ingredients": ["peanut", "peanut butter", "peanut oil"]},
     "2": {"name": "Gluten free",    "banned_ingredients": ["wheat", "cereal", "barley", "rye"]},
     "3": {"name": "Halal",          "banned_ingredients": ["pork", "gelatin"]},
     "4": {"name": "Vegan",          "banned_ingredients": ["pork", "gelatin", "chicken", "beef", "pork", "meat", "meat extract", "eggs", "cheese"]},

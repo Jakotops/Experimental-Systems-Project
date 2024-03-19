@@ -16,7 +16,7 @@ const ProfilePage = () => {
     <Stack.Screen options={{headerShown: false}} name="Menu" component={Menu} />
     <Stack.Screen name="History" component={History} />
     <Stack.Screen name="Settings" component={Settings} />
-    <Stack.Screen name="ProductCardTest" component={ProductCard} />
+    <Stack.Screen name="ProductCardTest" component={ProductCard} options={{ title: '' }} />
   </Stack.Navigator>
   )
 }

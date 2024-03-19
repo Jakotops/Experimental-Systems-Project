@@ -47,7 +47,6 @@ const DoubleList = ({listName1, listName2, listItems1, listItems2, listFeatures1
           <Text style={[styles.buttonText, isIngredientsClicked && styles.clickedButtonText]}>{listName2}</Text>
       </TouchableOpacity>
       </View>
-      <View><Button title="Product Card [Test]" onPress={toggleProductCard} /></View>
       <View>
         {showDiet && (
           <View>
@@ -83,7 +82,7 @@ const styles = StyleSheet.create({
     borderColor: 'black',
     //padding: 10,
     paddingVertical: 15,
-    paddingHorizontal: 20,
+    paddingHorizontal: 10,
     borderRadius: 15,
   },
   buttonText: {
@@ -92,7 +91,7 @@ const styles = StyleSheet.create({
     fontSize: 25, 
   },
   clickedButton: {
-    backgroundColor: '#4bcba3',
+    backgroundColor: '#F69D34',
   },
   clickedButtonText: {
     color: 'white',

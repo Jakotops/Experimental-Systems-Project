@@ -1,45 +1,109 @@
 // TO DO: Create a card for product information using the user database of scanned items
 
-import { StyleSheet, Text, View, SafeAreaView } from 'react-native'
-import React from 'react'
+import { readDocmentsMatchingField, getCurrentUserId } from '../../Firebase/FirestoreFunctions';
+import { StyleSheet, Text, View, SafeAreaView, Image, ScrollView } from 'react-native'
+import React, { useEffect, useState } from 'react'
 
-const ProductCard = () => {
-  let nutr = [];
-  let ingr = [];
+const ProductCard = ({route}) => {
+  const { productBarcode }  = route.params;
+  const userId = getCurrentUserId();
+  const [productData, setProductData] = useState({});
+  const [ingredients, setIngredients] = useState([]);
+  const [loading, setLoading] = useState(true);
+  useEffect(() => {
+    const retriveProductData = async () => {
+      try {
+        const productsRetrived = await readDocmentsMatchingField('products', 'userId', userId);
+        // console.log("Products: " + productsRetrived);
+        let productData = {};
+        for (let i = 0; i < productsRetrived.length; i++) {
+          if (productsRetrived[i].barcode === productBarcode) {
+            productData = productsRetrived[i];
+            productData.productNutrition ? productData.productNutrition.toUpperCase() : ""
+            setProductData(productData);
+          }
+        }
+        // console.log(productData); 
+        let ingredientObjectList = productData.productIngredients;
+        console.log(ingredientObjectList);
+        let ingredientArray = [];
+        for (let i = 0; i < ingredientObjectList.length; i++) {
+          const ingredientObject = ingredientObjectList[i];
+          const ingredientId = ingredientObject.id
 
-  nutr = [
-    { name: 'Energy: g' },
-    { name: 'Fat: g' },
-    { name: 'Carbs: g' },
-    { name: 'Salt: g' },
-    {name: 'Sugars: g' },
-    { name: 'Saturate: g' },
-  ];
+          if (ingredientId.includes('en:')) {
+            let ingredient = ingredientId.replace('en:', ''); 
+            ingredient = ingredient.replace(/-/g, ' ');
+            //capitalize the first letter of each word
+            ingredient = ingredient.replace(/\b\w/g, l => l.toUpperCase());
+            ingredientArray.push({ name: ingredient });
+          }
+        }
+        //console.log(ingredientArray);
+        setIngredients(ingredientArray);
+      } catch (error) {
+        console.error('Error loading product data:', error);
 
-  ingr = [
-    { name: 'Ingredient 1' },
-    { name: 'Ingredient 2' },
-    { name: '...' },
-  ];
+    }
+    setLoading(false);
+  };
+    retriveProductData();
+    return () => {setLoading(true)};
+  }, []); 
+  if (loading) {
+    return (
+        <View >
+          <Text></Text>
+        </View>
+    )
+  }
   return (
+
     <SafeAreaView style={styles.container}>
+      <ScrollView contentContainerStyle={{ flexGrow: 1, alignItems: 'center', padding:20}}>
       <View style={styles.titleContainer}>
-        <Text style={styles.title}>Product Name</Text>
+        <Text style={styles.title}>{productData.productName}</Text>
       </View>
-      <Text style={[styles.text]}>Product Image</Text>
+      <Image 
+        style={productData.productImage ? styles.imageContainer : styles.placeholderImageContainer}
+        source={productData.productImage ? {uri: productData.productImage} : require('../../assets/logo.png')}
+        />
+      {!productData.productSafety && 
       <View style={styles.subtitleContainter}>
-        <Text style={styles.subtitle}>Nutrional Value</Text>
-      </View>
-      {nutr.map((item, index) => (
-        <Text style={[styles.text]} key={index}>{item.name}</Text>
+        <Text style={styles.subtitle}>Flagged Diets</Text>
+      </View>}
+      {!productData.productSafety && productData.flaggedDiets && productData.flaggedDiets.map((item, index) => {
+          let formattedItem = item.replace(/\b\w/g, l => l.toUpperCase());
+          // Replace underscores with whitespace
+          formattedItem = formattedItem.replace(/_/g, ' ');
+          return (
+            <Text style={styles.text} key={index}>{formattedItem}</Text>
+          );
+        }
+      )}
+      {!productData.productSafety &&
+      <View style={styles.subtitleContainter}>
+        <Text style={styles.subtitle}>Flagged Ingredients</Text>
+      </View>}
+      {!productData.productSafety && productData.flaggedIngredients && productData.flaggedIngredients.map((item, index) => (
+        <Text style={[styles.text]}>{item.replace(/\b\w/g, l => l.toUpperCase())}</Text>
       ))}
+
+      <View style={styles.subtitleContainter}>
+        <Text style={styles.subtitle}>Nutricore Grade</Text>
+      </View>
+        <Text style={[styles.text]}>{productData.productNutrition ? productData.productNutrition.toUpperCase() : "unknown"}</Text>
       <View style={styles.subtitleContainter}>
         <Text style={styles.subtitle}>Ingredients</Text>
       </View>
-      {ingr.map((item, index) => (
+      {ingredients.map((item, index) => (
         <Text style={[styles.text]}>{item.name}</Text>
       ))}
+      </ScrollView>
     </SafeAreaView>
+
+
+
   )
 }
 
@@ -48,9 +112,7 @@ export default ProductCard
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    alignItems: 'center',
-    backgroundColor: '#FFFFFF', 
-    padding: 20,
+    backgroundColor: '#FFFFFF',
   },
   titleContainer: {
     backgroundColor: '#f19a33', 
@@ -82,6 +144,24 @@ const styles = StyleSheet.create({
     alignItems: 'center', 
   },
   text: {
-    fontSize: 12,
+    fontSize: 20,
+    
+  },
+  imageContainer: {
+    width: 150,
+    height: 200,
+    borderRadius: 10,
+    resizeMode: "stretch",
+    borderWidth: 1,
+    borderColor: 'black',
+
+  },
+  placeholderImageContainer: {
+    width: 200,
+    height: 100,
+    borderRadius: 10,
+    resizeMode: "stretch",
+    borderWidth: 1,
+    borderColor: 'black',
   }
 })

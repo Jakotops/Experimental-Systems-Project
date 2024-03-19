@@ -82,14 +82,14 @@ const Settings = () => {
                   }}>
                   <View style={styles.tab}>
                     <FeatherIcon
-                      color={isActive ? '#6366f1' : '#6b7280'}
+                      color={isActive ? '#F69D34' : '#6b7280'}
                       name={icon}
                       size={16} />
 
                     <Text
                       style={[
                         styles.tabText,
-                        isActive && { color: '#6366f1' },
+                        isActive && { color: '#F69D34' },
                       ]}>
                       {name}
                     </Text>
@@ -345,7 +345,7 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'center',
-    backgroundColor: '#007bff',
+    backgroundColor: '#F69D34',
     borderRadius: 12,
   },
   profileActionText: {

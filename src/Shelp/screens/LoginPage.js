@@ -118,11 +118,14 @@ export default LoginPage
 
 const styles = StyleSheet.create({
   logo: {
+    width: "100%",
+    resizeMode: "contain",
   },
 
   logoContainer: {
     alignItems: 'center', // Center the content horizontally
     marginBottom: 40,
+    width: "100%",
   },
 
   container: {
