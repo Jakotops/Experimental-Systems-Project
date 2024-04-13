@@ -176,6 +176,11 @@ export async function evaluateProductGivenDietData(barcode, diet_data){
         let other_selected_banned_ingredient = diet_data.other_bd_igrdnts[other_selected_banned_ing_num];
         
         // Checks if product ingredient contains the banned ingredient or if the banned ingredient contains the product ingredient as a substring
+        //console.log(`Current ingredient: ${current_ingredient}`);
+        //console.log(`Other selected banned ingredient: ${other_selected_banned_ingredient}`);
+        //console.log(`Current ingredient includes other selected banned ingredient: ${current_ingredient.includes(other_selected_banned_ingredient)}`);
+        //console.log(`Other selected banned ingredient includes current ingredient: ${other_selected_banned_ingredient.includes(current_ingredient)}`);
+        //console.log();
         if (current_ingredient.includes(other_selected_banned_ingredient) || other_selected_banned_ingredient.includes(current_ingredient)){
           toReturn.product_safety = false;
           if (!toReturn.bad_ingrdts_fnd.includes(current_ingredient)){
