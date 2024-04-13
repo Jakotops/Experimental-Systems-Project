@@ -101,9 +101,9 @@ const RegularList = ({name, items,  features, listHeight}) => {
     <ScrollView style={{height:listHeight}}>
       <View style={{paddingBottom:10}}>
         {items.map((items, index) => (
-          <TouchableOpacity key={index} style={styles.itemContainer} onPress={() => {if(features[0]){toggleCheckbox(index)}}}>
-            {features[0] && <View style={[styles.checkbox, checkedItems[index] && styles.checked]}/>} 
-            <Text style={[styles.text]} key={index}>{items.name.replace(/\b\w/g, l => l.toUpperCase())}</Text>
+          <TouchableOpacity key={index + 1} style={styles.itemContainer} onPress={() => {if(features[0]){toggleCheckbox(index + 1)}}}>
+          {features[0] && <View style={[styles.checkbox, checkedItems[index + 1] && styles.checked]}/>} 
+          <Text style={[styles.text]} key={index + 1}>{items.name.replace(/\b\w/g, l => l.toUpperCase())}</Text>
             {features[1] && <TouchableOpacity style={styles.arrowButton} onPress={() => arrowPress(items)}><Text style={styles.arrowIcon}>→</Text></TouchableOpacity>}
           </TouchableOpacity>
         ))}
