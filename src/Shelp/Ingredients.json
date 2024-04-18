@@ -15,6 +15,7 @@
     "13": {"name": "meat", "allergies": ["vegetarian", "vegan"]},
     "14": {"name": "meat extract", "allergies": ["vegetarian", "vegan"]},
     "15": {"name": "eggs", "allergies": ["vegan"]},
-    "16": {"name": "cheese", "allergies": ["vegan", "dairy_free"]}
+    "16": {"name": "cheese", "allergies": ["vegan", "dairy_free"]},
+    "17": {"name": "milk", "allergies": ["vegan", "dairy_free"]}
   }
 }

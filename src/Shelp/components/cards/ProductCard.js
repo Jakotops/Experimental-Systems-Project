@@ -24,8 +24,10 @@ const ProductCard = ({route}) => {
           }
         }
         // console.log(productData); 
-        let ingredientObjectList = productData.productIngredients;
-        console.log(ingredientObjectList);
+        const ingredientObjectList = productData.productIngredients;
+        const allergens = productData.productAllergens ? productData.productAllergens : "";
+        const allergenList = allergens.split(',');
+        //console.log(ingredientObjectList);
         let ingredientArray = [];
         for (let i = 0; i < ingredientObjectList.length; i++) {
           const ingredientObject = ingredientObjectList[i];
@@ -35,9 +37,21 @@ const ProductCard = ({route}) => {
             let ingredient = ingredientId.replace('en:', ''); 
             ingredient = ingredient.replace(/-/g, ' ');
             //capitalize the first letter of each word
+            if (ingredient.trim().split(' ').length > 4) {
+              continue;
+            }
             ingredient = ingredient.replace(/\b\w/g, l => l.toUpperCase());
             ingredientArray.push({ name: ingredient });
           }
+        }
+        for (let i = 0; i < allergenList.length; i++) {
+          if (allergenList[i] === "") {
+            continue;
+          }
+          let allergen = allergenList[i];
+          allergen = allergen.replace('en:', '');
+          allergen = allergen.replace(/\b\w/g, l => l.toUpperCase());
+          ingredientArray.push({ name: allergen + " (Allergen)" });
         }
         //console.log(ingredientArray);
         setIngredients(ingredientArray);
@@ -86,7 +100,7 @@ const ProductCard = ({route}) => {
         <Text style={styles.subtitle}>Flagged Ingredients</Text>
       </View>}
       {!productData.productSafety && productData.flaggedIngredients && productData.flaggedIngredients.map((item, index) => (
-        <Text style={[styles.text]}>{item.replace(/\b\w/g, l => l.toUpperCase())}</Text>
+        <Text style={[styles.text]} key={index}>{item.replace(/\b\w/g, l => l.toUpperCase())}</Text>
       ))}
 
       <View style={styles.subtitleContainter}>
@@ -97,7 +111,7 @@ const ProductCard = ({route}) => {
         <Text style={styles.subtitle}>Ingredients</Text>
       </View>
       {ingredients.map((item, index) => (
-        <Text style={[styles.text]}>{item.name}</Text>
+        <Text style={[styles.text]} key={index}>{item.name}</Text>
       ))}
       </ScrollView>
     </SafeAreaView>

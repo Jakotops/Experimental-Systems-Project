@@ -67,7 +67,7 @@ export async function getProductData(barcode, request_data){
       toReturn.ingredient_data = data_retrieved.product.ingredients ? data_retrieved.product.ingredients : [];
     }
     if (request_data.allergens_wanted){
-      toReturn.allergens = data_retrieved.product.allergens ? data_retrieved.product.allergens : [];
+      toReturn.allergens = data_retrieved.product.allergens ? data_retrieved.product.allergens : "";
     }
     if (request_data.nutri_val_wanted){
       toReturn.nutriscore_grade = data_retrieved.product.nutriscore_grade ? data_retrieved.product.nutriscore_grade : "";
@@ -124,10 +124,10 @@ export async function evaluateProductGivenDietData(barcode, diet_data){
 
   // Initialise toReturn
   let toReturn = {success: false, product_safety: true, bad_ingrdts_fnd: [], diets_cntrdctd: [], image_URL: "", product_name: "", no_ingrdts_fnd: false};
-  const product_data = await getProductData(barcode, {ingrd_wanted: true, images_wanted: true});
+  const product_data = await getProductData(barcode, {ingrd_wanted: true, images_wanted: true, allergens_wanted: true, nutri_val_wanted: true});
   // Check fetch success
   if (product_data.fetchSuccess){
-    //console.log(`Data retrieved: ${JSON.stringify(product_data)}`);
+    console.log(`Data retrieved: ${JSON.stringify(product_data)}`);
 
     
     // Extract data
@@ -135,13 +135,22 @@ export async function evaluateProductGivenDietData(barcode, diet_data){
     let new_unbreached_diets = unbreached_diets.slice(0);
 
     // Check each ingredient
-    let ingredient_list = [];
-    if (product_data.ingredient_data.length == 0){
+    let ingredient_list = product_data.ingredient_data;
+    const allergens_list = product_data.allergens.split(",");
+    console.log(`allergens_list:` , allergens_list);
+    for (let allergen_num = 0; allergen_num < allergens_list.length; allergen_num++){
+      if (!ingredient_list.includes(allergens_list[allergen_num])){
+        let ingredient_object = {id: allergens_list[allergen_num] + " (Allergen)"};
+        ingredient_list.push(ingredient_object);
+      }
+    }
+    console.log(`ingredient_data:` , ingredient_list); 
+    if (ingredient_list.length == 0){
       toReturn.product_safety = false;
       toReturn.no_ingrdts_fnd = true;
     }
-    for (let curr_ing_num = 0; curr_ing_num < product_data.ingredient_data.length; curr_ing_num++){
-      let current_ingredient = product_data.ingredient_data[curr_ing_num].id.toLowerCase();
+    for (let curr_ing_num = 0; curr_ing_num < ingredient_list.length; curr_ing_num++){
+      let current_ingredient = ingredient_list[curr_ing_num].id.toLowerCase();
 
       //console.log(`Checking ingredient: ${JSON.stringify(current_ingredient)}`);
 
@@ -161,7 +170,7 @@ export async function evaluateProductGivenDietData(barcode, diet_data){
           // Checks if product ingredient contains the banned ingredient or if the banned ingredient contains the product ingredient as a substring
           if (current_ingredient.includes(selected_banned_ingredient) || selected_banned_ingredient.includes(current_ingredient)){
             toReturn.product_safety = false;
-            if (!toReturn.bad_ingrdts_fnd.includes(current_ingredient)){
+            if (!toReturn.bad_ingrdts_fnd.includes(selected_banned_ingredient)){
               toReturn.bad_ingrdts_fnd.push(selected_banned_ingredient);
             }
             toReturn.diets_cntrdctd.push(current_diet_object.name);
@@ -178,7 +187,7 @@ export async function evaluateProductGivenDietData(barcode, diet_data){
         // Checks if product ingredient contains the banned ingredient or if the banned ingredient contains the product ingredient as a substring
         if (current_ingredient.includes(other_selected_banned_ingredient) || other_selected_banned_ingredient.includes(current_ingredient)){
           toReturn.product_safety = false;
-          if (!toReturn.bad_ingrdts_fnd.includes(current_ingredient)){
+          if (!toReturn.bad_ingrdts_fnd.includes(other_selected_banned_ingredient)){
             toReturn.bad_ingrdts_fnd.push(other_selected_banned_ingredient);
           }
         }
