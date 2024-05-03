@@ -1,10 +1,11 @@
 // TO DO: Display two custom list compenents side by side in a navigation stack
 
-import { StyleSheet, Text, View, Button, TouchableOpacity} from 'react-native'
+import { StyleSheet, Text, View, Button, FlatList, TouchableOpacity} from 'react-native'
 import React, { useState } from 'react'
 import RegularList from './RegularList'
 import { useNavigation } from '@react-navigation/core';
-
+import {Picker} from '@react-native-picker/picker';
+ 
 const DoubleList = ({listName1, listName2, listItems1, listItems2, listFeatures1, listFeatures2, containerHeight}) => {
   const [showDiet, setShowDiet] = useState(false);
   const [showIngredients, setShowIngredients] = useState(false);
@@ -12,6 +13,7 @@ const DoubleList = ({listName1, listName2, listItems1, listItems2, listFeatures1
 
   const [isDietClicked, setIsDietClicked] = useState(false);
   const [isIngredientsClicked, setIsIngredientsClicked] = useState(false);
+  const [selectedCategory, setSelectedCategory] = useState('All');
 
   const toggleDietList = () => {
     setShowDiet(!showDiet);
@@ -46,6 +48,22 @@ const DoubleList = ({listName1, listName2, listItems1, listItems2, listFeatures1
         >
           <Text style={[styles.buttonText, isIngredientsClicked && styles.clickedButtonText]}>{listName2}</Text>
       </TouchableOpacity>
+      </View>
+      <View style={styles.buttonContainer}>
+        <Picker
+          style={styles.button}
+          selectedValue={selectedCategory}
+          onValueChange={(itemValue) => setSelectedCategory(itemValue)}
+        >
+          <Picker.Item label="Drinks" value="drinks" />
+          <Picker.Item label="Condiments" value="condiments" />
+          <Picker.Item label="Biscuits" value="biscuits" />
+          <Picker.Item label="Crisps" value="crisps" />
+          <Picker.Item label="Meat" value="meat" />
+          <Picker.Item label="Vegetables" value="vegetables" />
+          <Picker.Item label="Other Snacks" value="othersnacks" />
+          <Picker.Item label="Miscellaneous" value="miscellaneous" />
+        </Picker>
       </View>
       <View>
         {showDiet && (
