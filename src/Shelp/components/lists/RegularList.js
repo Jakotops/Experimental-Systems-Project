@@ -72,6 +72,7 @@ const RegularList = ({name, items,  features, listHeight}) => {
   }, [name]);
   // Function to toggle the checked state of an item
   const toggleCheckbox = async (index) => {
+    console.log('Toggling checkbox:', index);
     setCheckedItems((prevCheckedItems) => {
       const updatedCheckedItems = { ...prevCheckedItems }; // Creates a copy of the previous state of 'checkedItems' using the spread operator
       updatedCheckedItems[index] = !updatedCheckedItems[index]; // Toggle the checked state

@@ -6,14 +6,15 @@ import { Modal } from "./Modal";
 
 const SafeImage = require('../../assets/images/check.png');
 
-export default function SafeAlert({ isVisible, onClose, data }) {
+export default function SafeAlert({ isVisible, onClose, data, barcode, image }) {
   return (
     <Modal isVisible={isVisible}>
       <Modal.Container>
         <Modal.Header title="Safe" />
         <Modal.Body>
-          <Image source={SafeImage} style={styles.image} />
+          <Image source={{uri: image}} style={styles.image} />
           <Text style={styles.text}>{data}</Text>
+          <Text style={styles.text}>Barcode: {barcode}</Text>
         </Modal.Body>
         <Modal.Footer>
           <Button title={'Close'} onPress={onClose} />

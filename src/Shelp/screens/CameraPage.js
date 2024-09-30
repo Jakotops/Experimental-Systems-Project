@@ -12,6 +12,8 @@ const CameraPage = () => {
   const [hasPermission, setHasPermission] = useState(null);
   const [scanned, setScanned] = useState(false);
   const [text, setText] = useState('Not yet scanned');
+  const [barcode, setBarcode] = useState('0');
+  const [prodImage, setProdImage] = useState(null);
   const [isWarningModalVisible, setIsWarningModalVisible] = useState(false);
   const [isSafeModalVisible, setIsSafeModalVisible] = useState(false);
   const [dietData, setDietData] = useState({userDiets: [], other_banned_ings: []});
@@ -59,7 +61,7 @@ const CameraPage = () => {
   // What happens when we scan the barcode
   const handleBarCodeScanned = async ({ type, data }) => {
     setScanned(true);
-    setText(data);
+    setBarcode(data);
     //console.log('Type: ' + type + '\nData: ' + data)
     // Check if the product is safe for the user
     const barcodeResults = await evaluateProductGivenDietData(data, dietData);
@@ -76,18 +78,21 @@ const CameraPage = () => {
     if (barcodeResults.no_ingrdts_fnd){
       modalText = barcodeResults.product_name + "\nWarning: No ingredients found for this product";
       setText(modalText);
+      setProdImage(barcodeResults.image_URL);
       setIsWarningModalVisible(true);
     }
     // If the product is not safe, display the conflicting diets and ingredients
     else if (!barcodeResults.product_safety){
       modalText = barcodeResults.product_name + "\nThis product is not safe!" + "\nConflicting diets: " + barcodeResults.diets_cntrdctd + "\nConflicting ingredients: " + barcodeResults.bad_ingrdts_fnd;
       setText(modalText);
+      setProdImage(barcodeResults.image_URL);
       setIsWarningModalVisible(true);
     }
     // If the product is safe, display a success message
     else {
       modalText = barcodeResults.product_name + "\nThis product is safe!"
       setText(modalText);
+      setProdImage(barcodeResults.image_URL);
       setIsSafeModalVisible(true);
     }
 
@@ -173,8 +178,8 @@ const CameraPage = () => {
         </View>
       )}
       
-      <WarningAlert isVisible={isWarningModalVisible} onClose={onWarningModalClose} data={text}/>
-      <SafeAlert isVisible={isSafeModalVisible} onClose={onSafeModalClose} data={text}/>
+      <WarningAlert isVisible={isWarningModalVisible} onClose={onWarningModalClose} data={text} barcode={barcode} image={prodImage}/>
+      <SafeAlert isVisible={isSafeModalVisible} onClose={onSafeModalClose} data={text} barcode={barcode} image={prodImage}/>
     </View>
   );
 }
